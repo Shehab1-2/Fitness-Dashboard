@@ -1,0 +1,41 @@
+/* src/components/Header.css */
+.header {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: rgb(173, 167, 167);
+    /* Adjusted to match HomePage background */
+    color: white;
+    font-family: 'Courier New', monospace;
+    /* Consistent font family */
+}
+
+.logo {
+    font-size: 1.5em;
+    font-weight: bold;
+    font-family: 'Courier New', monospace;
+    cursor: pointer;
+    /* Indicates that the logo is clickable */
+}
+
+.navigation .nav-button {
+    background: none;
+    border: 2px solid white;
+    color: white;
+    padding: 10px 20px;
+    margin-left: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    font-family: 'Courier New', monospace;
+    /* Consistent font family */
+    border-radius: 25px;
+    /* Rounded borders similar to other buttons */
+}
+
+.navigation .nav-button:hover {
+    background-color: white;
+    color: rgb(173, 167, 167);
+    /* Hover color adjusted to match the HomePage background */
+    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+    /* Similar hover effect as HomePage buttons */
+}

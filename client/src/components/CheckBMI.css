@@ -1,0 +1,39 @@
+.check-bmi {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgb(173, 167, 167);
+    font-family: 'Courier New', monospace;
+    padding: 20px;
+    height: 100vh;
+}
+
+.bmi-form {
+    max-width: 600px;
+    text-align: center;
+}
+
+.bmi-form input {
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.bmi-form button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+}
+
+.bmi-form button:hover {
+    background-color: #45a049;
+}
+
+.bmi-result p {
+    font-size: 1em;
+    margin-top: 10px;
+}
