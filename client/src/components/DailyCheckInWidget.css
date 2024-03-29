@@ -1,0 +1,29 @@
+.daily-check-in-widget {
+    background: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+    margin: 10px;
+    font-family: 'Courier New', monospace;
+    text-align: center;
+}
+
+.daily-check-in-widget button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    background-image: linear-gradient(to right, #88898a, #a9c8f2);
+    color: rgb(0, 0, 0);
+    font-size: 1em;
+    cursor: pointer;
+    outline: none;
+    transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s;
+}
+
+.daily-check-in-widget button:hover {
+    background-image: linear-gradient(to right, #50b2f0, #2e7cdb);
+    transform: translateY(-2px);
+    box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+}
+
+/* Add more styles as needed */

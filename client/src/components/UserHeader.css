@@ -1,0 +1,55 @@
+/* src/components/UserHeader.css */
+
+.user-header {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    background-color: rgb(109, 104, 104);
+    color: white;
+    font-family: 'Courier New', monospace;
+}
+
+.user-header .logo {
+    font-size: 1.5em;
+    font-weight: bold;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.user-header .navigation {
+    display: flex;
+    align-items: center;
+    margin-left: 200px;
+    /* Space between logo and navigation links */
+    flex-grow: 1;
+    /* Allows navigation to take available space */
+}
+
+.user-header button,
+.user-header .nav-button {
+    padding: 10px 20px;
+    margin: 0 5px;
+    /* Space between each button */
+    border: none;
+    border-radius: 25px;
+    background-image: linear-gradient(to right, #88898a, #a9c8f2);
+    color: rgb(0, 0, 0);
+    font-size: 1em;
+    cursor: pointer;
+    outline: none;
+    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+    transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s;
+    font-family: 'Courier New', monospace;
+}
+
+.user-header button:last-child {
+    margin-left: auto;
+    /* Pushes the last button (logout) to the right */
+}
+
+.user-header button:hover,
+.user-header .nav-button:hover {
+    background-image: linear-gradient(to right, #50b2f0, #2e7cdb);
+    transform: translateY(-2px);
+    box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+}

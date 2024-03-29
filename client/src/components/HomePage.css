@@ -1,0 +1,104 @@
+/* src/components/HomePage.css */
+.homepage {
+    position: relative;
+    height: 100vh;
+    /* Full viewport height */
+    display: flex;
+    flex-direction: column;
+    /* Stack elements vertically */
+    overflow: hidden;
+    background-color: rgb(173, 167, 167);
+    /* Set background to white */
+    font-family: 'Courier New', monospace;
+}
+
+/* If Header component has its own styles, you might not need to add additional styling here.
+   Otherwise, you can style your header as needed. */
+
+.content {
+    font-weight: 700;
+    line-height: 1.5;
+    flex-grow: 1;
+    /* Take up remaining space */
+    display: flex;
+    flex-direction: column;
+    /* Stack elements vertically */
+    justify-content: center;
+    /* Center content vertically */
+    align-items: center;
+    /* Center content horizontally */
+    text-align: center;
+    z-index: 1;
+    padding: 20px;
+    /* Add some padding */
+    transition: opacity 2s ease-in;
+    opacity: 0;
+    /* Start with invisible text */
+
+}
+
+.content.fade-in {
+    opacity: 1;
+    /* Fade in to full visibility */
+}
+
+.content h1 {
+    font-size: 2.5em;
+    /* Adjust font size as necessary */
+    margin-bottom: 0.5em;
+    /* Space between the heading and paragraph */
+}
+
+.content p {
+    font-size: 1em;
+    /* Adjust paragraph font size as necessary */
+    max-width: 600px;
+    /* Set a max-width for better readability on larger screens */
+}
+
+.start-now-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    /* Adjust to match the roundness of the button in the image */
+    background-image: linear-gradient(to right, #88898a, #a9c8f2);
+    /* Example gradient; adjust the colors to match your image */
+    color: rgb(0, 0, 0);
+    font-size: 1.5em;
+    font-weight: 700;
+    cursor: pointer;
+    outline: none;
+    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+    /* Example shadow; adjust as needed */
+    transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s;
+    animation: flickerAnimation 1s infinite;
+    font-family: 'Courier New', monospace;
+}
+
+@keyframes flickerAnimation {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.start-now-btn:hover {
+    background-image: linear-gradient(to right, #50b2f0, #2e7cdb);
+    /* Darken gradient on hover */
+    transform: translateY(-2px);
+    box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+    /* Increase shadow on hover */
+}
+
+.start-now-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+    /* Reset shadow on click */
+}
