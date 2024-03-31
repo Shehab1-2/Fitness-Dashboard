@@ -1,59 +1,82 @@
 /* src/components/FitnessSurvey.css */
-.fitness-survey-form {
+
+@import url('https://fonts.googleapis.com/css?family=Courier New');
+.fitnesssurvey {
     position: relative;
-    height: auto;
-    /* Adjust height as needed */
+    height: 100vh;
+    /* Full viewport height */
     display: flex;
     flex-direction: column;
-    /* Stack form elements vertically */
+    /* Stack elements vertically */
+    overflow: hidden;
     background-color: rgb(173, 167, 167);
-    /* Similar background color */
+    /* Set background to white */
     font-family: 'Courier New', monospace;
-    padding: 20px;
-    /* Padding around the form */
-    margin: auto;
-    /* Center the form */
-    max-width: 600px;
-    /* Set max-width for better layout */
-    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-    /* Box shadow for depth */
-    border-radius: 10px;
-    /* Rounded corners for the form */
+}
+.fitness-survey-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: rgb(173, 167, 167);
+    font-family: 'Courier New', monospace;
 }
 
-.fitness-survey-form label {
-    font-weight: 700;
-    margin-top: 10px;
-    margin-bottom: 5px;
-    display: block;
-    /* Ensure labels are on their own line */
+.fitness-survey-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 60%;
+    /* Adjust width as needed for a smaller form */
+    max-width: 400px;
+    /* Limiting max width for larger screens */
+    padding: 20px;
+    background-color: #2a0a0a;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 2s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.fitness-survey-container h1 {
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 .fitness-survey-form input,
 .fitness-survey-form select,
 .fitness-survey-form textarea {
-    width: 100%;
-    /* Full width inputs */
+    width: 40%;
+    /* Smaller width for input fields */
     padding: 10px;
-    /* Padding inside inputs */
-    margin-bottom: 10px;
-    /* Space between form elements */
-    border: 1px solid #ccc;
-    /* Border for inputs */
-    border-radius: 5px;
-    /* Slightly rounded borders for inputs */
+    margin: 10px auto;
+    /* Centering the input fields */
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
 }
 
 .fitness-survey-form button {
-    padding: 10px 20px;
+    width: 80%;
+    /* Matching the input fields width */
+    padding: 10px;
+    margin: 20px auto;
+    /* Centering the button */
     border: none;
     border-radius: 25px;
-    /* Rounded button edges */
     background-image: linear-gradient(to right, #88898a, #a9c8f2);
-    /* Gradient background */
     color: rgb(0, 0, 0);
     font-size: 1em;
-    font-weight: 700;
     cursor: pointer;
     outline: none;
     box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
@@ -63,7 +86,6 @@
 
 .fitness-survey-form button:hover {
     background-image: linear-gradient(to right, #50b2f0, #2e7cdb);
-    /* Hover effect */
     transform: translateY(-2px);
     box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
 }
@@ -71,5 +93,4 @@
 .fitness-survey-form button:active {
     transform: translateY(0);
     box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-    /* Reset on click */
 }

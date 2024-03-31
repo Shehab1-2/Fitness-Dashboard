@@ -20,7 +20,6 @@ const userSchema = new mongoose.Schema({
   gender: {
       type: String,
       //required: [true, 'Gender is required'],
-      default: '',
     },
 
     height: {

@@ -14,7 +14,7 @@ const App = () => {
   return (
     <Router>
       <div className="App">
-        <CustomCursor />
+        {/* <CustomCursor /> */}
         
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -22,8 +22,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/check-bmi" element={<CheckBMI />} />
-          <Route path="/fitness-survey" element={<SurveyForm />} />
-
+          {/* <Route path="/fitness-survey" element={<SurveyForm />} /> */}
         </Routes>
       </div>
     </Router>

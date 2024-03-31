@@ -54,7 +54,12 @@ const navigate = useNavigate(); // Initialize the useNavigate hook
   };
 
   return (
+    <div className='fitnesssurvey'>
+      <h1>Complete your fitness survey</h1>
+
     <form onSubmit={handleSubmit} className="fitness-survey-form">
+
+
       <label>Gender:</label>
       <select name="gender" value={surveyData.gender} onChange={handleChange}>
         <option value="">Select Gender</option>
@@ -63,7 +68,7 @@ const navigate = useNavigate(); // Initialize the useNavigate hook
         <option value="other">Other</option>
       </select>
 
-      <label>Height (cm):</label>
+      <label>Height (in):</label>
       <input 
         type="number" 
         name="height" 
@@ -71,7 +76,7 @@ const navigate = useNavigate(); // Initialize the useNavigate hook
         onChange={handleChange} 
       />
 
-      <label>Weight (kg):</label>
+      <label>Weight (lb)):</label>
       <input 
         type="number" 
         name="weight" 
@@ -80,11 +85,13 @@ const navigate = useNavigate(); // Initialize the useNavigate hook
       />
 
       <label>Fitness Goals:</label>
-      <textarea 
-        name="fitnessGoals" 
-        value={surveyData.fitnessGoals} 
-        onChange={handleChange}
-      ></textarea>
+        <select name="fitnessGoals" value={surveyData.fitnessGoals} onChange={handleChange}>
+          <option value="">Select Fitness Goal</option>
+          <option value="lose weight">Lose Weight</option>
+          <option value="gain muscle">Gain Muscle</option>
+          <option value="improve stamina">Improve Stamina</option>
+          <option value="increase flexibility">Increase Flexibility</option>
+        </select>
 
       <label>Current Activity Level:</label>
       <select name="currentActivityLevel" value={surveyData.currentActivityLevel} onChange={handleChange}>
@@ -95,14 +102,18 @@ const navigate = useNavigate(); // Initialize the useNavigate hook
       </select>
 
       <label>Dietary Preferences:</label>
-      <textarea 
-        name="dietaryPreferences" 
-        value={surveyData.dietaryPreferences} 
-        onChange={handleChange}
-      ></textarea>
+        <select name="dietaryPreferences" value={surveyData.dietaryPreferences} onChange={handleChange}>
+          <option value="">Select Dietary Preference</option>
+          <option value="vegetarian">Vegetarian</option>
+          <option value="vegan">Vegan</option>
+          <option value="paleo">Paleo</option>
+          <option value="keto">Keto</option>
+          <option value="none">None</option>
+        </select>
 
       <button type="submit">Submit</button>
     </form>
+    </div>
   );
 };
 
