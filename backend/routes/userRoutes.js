@@ -15,11 +15,18 @@ router.post('/signup', async (req, res) => {
 
     // Hash the password
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    const { username, gender, height, weight, fitnessGoals, currentActivityLevel, dietaryPreferences } = req.body;
 
     // Create a new user
     const user = new User({
       username: req.body.username,
       password: hashedPassword,
+      gender,
+      height,
+      weight,
+      fitnessGoals,
+      currentActivityLevel,
+      dietaryPreferences
     });
 
     // Save the user in the database
@@ -57,6 +64,8 @@ router.post('/login', async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
+
+
 
 // POST endpoint to save user's BMI
 router.post('/save-bmi', async (req, res) => {

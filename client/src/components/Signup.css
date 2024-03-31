@@ -2,54 +2,47 @@
 
 .signup {
     position: relative;
-    height: 100vh;
     display: flex;
     flex-direction: column;
-    /* This will align children horizontally */
-    overflow: hidden;
+    min-height: 100vh;
+    /* Ensure it covers the viewport height */
+    align-items: center;
+    /* Center the content horizontally */
+    justify-content: center;
+    /* Center the content vertically */
     background-color: rgb(173, 167, 167);
     font-family: 'Courier New', monospace;
+    padding: 20px;
+    /* Add some padding around */
 }
 
 .signup-form-container {
-    flex-grow: 1;
-    display: flex;
-    justify-content: center;
-    /* Center form vertically */
-    align-items: center;
-    /* Center form horizontally */
     width: 100%;
+    /* Full width but max-width will control the actual size */
+    max-width: 600px;
+    /* Increased max-width to accommodate more content */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .signup-form {
-    max-width: 300px;
-    padding: 20px;
-    background-color: #fff;
-    /* Light background for the form */
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
     animation: fadeIn 2s ease-in;
-    /* Fade-in animation similar to HomePage */
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
 }
 
 .signup-form h2 {
     text-align: center;
-    margin-bottom: 20px;
+    margin: 20px 0;
 }
 
-input[type="email"],
-input[type="password"],
-input[type="text"] {
+.signup-form input,
+.signup-form select {
     width: 100%;
     padding: 10px;
     margin: 10px 0;
@@ -60,17 +53,16 @@ input[type="text"] {
 
 button[type="submit"] {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
+    margin-top: 20px;
     border: none;
     border-radius: 25px;
     background-image: linear-gradient(to right, #88898a, #a9c8f2);
     color: rgb(0, 0, 0);
     font-size: 1em;
     cursor: pointer;
-    outline: none;
     box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
     transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s;
-    font-family: 'Courier New', monospace;
 }
 
 button[type="submit"]:hover {
@@ -81,5 +73,14 @@ button[type="submit"]:hover {
 
 button[type="submit"]:active {
     transform: translateY(0);
-    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
