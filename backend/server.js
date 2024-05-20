@@ -4,9 +4,12 @@ const path = require('path');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const userRoutes = require('./routes/userRoutes'); // Import user routes
+const session = require('express-session');
+
 
 const app = express();
 console.log('MongoDB URI:', process.env.URI);
+
 
 // Connect to MongoDB
 const mongoDB = process.env.URI;
@@ -21,6 +24,14 @@ app.use(express.json()); // Parse JSON bodies
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'build')));
+
+
+app.use(session({
+  secret: 'hello', // Secret key for signing the session ID cookie
+  resave: false, // Don't save the session if unmodified
+  saveUninitialized: false, // Don't create a session until something is stored
+  cookie: { secure: false } // Set to true if using https
+}));
 
 // Use the userRoutes for any requests to /api/users
 app.use('/api/users', userRoutes);

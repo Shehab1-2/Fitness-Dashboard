@@ -28,7 +28,6 @@ const Login = () => {
         body: JSON.stringify({
           username: formData.username,
           password: formData.password,
-          gender: formData.gender
         }),
       });
 
@@ -36,10 +35,6 @@ const Login = () => {
       if (response.status === 200) {
         // Handle successful login
         localStorage.setItem('username', formData.username);
-        localStorage.setItem('gender', formData.gender);
-        localStorage.setItem('weight', formData.weight);
-        localStorage.setItem('height', formData.height);
-        
         // For example, store the user token in local storage or context
         // localStorage.setItem('userToken', data.token); // Uncomment if you're using JWT tokens
         alert('Login successful');
