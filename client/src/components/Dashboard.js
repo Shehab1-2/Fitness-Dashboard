@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import UserDetails from './UserDetails';
 import MacroWidget from './MacroWidget'; 
 import WeightInputWidget from './WeightInputWidget'; 
-import WeightGraph from './WeightGraph'; 
+import WeightGraph from './WeightGraph';
 import WeightProgress from './WeightProgress';
 
 import './Dashboard.css';
@@ -51,9 +51,10 @@ const Dashboard = () => {
 
 
         <main className="dashboard-main-content">
+          
           {/* Main Content Widgets */}
           {/* Replace these with actual components */}
-          <div className="widget steps-overview">WeightGraph</div>
+          <div className="widget nutrition"><WeightGraph username={username} /></div>
           <div className="widget nutrition">Weekly Workout</div>
           {/* ...other widgets */}
         </main>
@@ -61,6 +62,7 @@ const Dashboard = () => {
          <aside className="dashboard-summary">
           {/* User Summary */}
           <div className="widget-row">
+            
             <div className="widget"><MacroWidget /></div>
             <div className="widget">Check-in</div>
             <div className="widget"> <WeightInputWidget /></div>
