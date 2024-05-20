@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
 
-
 const UserDetails = () => {
     const [userData, setUserData] = useState(null);
     const username = localStorage.getItem('username');
@@ -19,6 +18,11 @@ const UserDetails = () => {
                     throw new Error('Failed to fetch user details');
                 }
                 const data = await response.json();
+                // Sort the weights by date in descending order and pick the first entry (most recent)
+                if (data.weights && data.weights.length > 0) {
+                    data.weights.sort((a, b) => new Date(b.date) - new Date(a.date));
+                    data.mostRecentWeight = data.weights[0].weight; // Store the most recent weight
+                }
                 setUserData(data);
             } catch (error) {
                 console.error('Error fetching user data:', error);
@@ -38,7 +42,7 @@ const UserDetails = () => {
             <p>Username: {userData.username}</p>
             <p>Gender: {userData.gender}</p>
             <p>Height: {userData.height} cm</p>
-            <p>Weight: {userData.weight} kg</p>
+            <p>Weight: {userData.mostRecentWeight || 'No recent weight'} kg</p>
             <p>Fitness Goal: {userData.fitnessGoals}</p>
             <p>Current Fitness Level: {userData.currentActivityLevel}</p>
             <p>Diet: {userData.dietaryPreferences}</p>
