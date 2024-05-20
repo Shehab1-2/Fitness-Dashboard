@@ -35,10 +35,16 @@ const userSchema = new mongoose.Schema({
     type: Number,
     default: 0 // Set to 0 or null as default
   },
-  weight: {
-    type: Number,
-    default: 0 // Set to 0 or null as default
-  },
+  weights: [{
+    weight: {
+      type: Number,
+      required: [true, 'Weight is required']
+    },
+    date: {
+      type: Date,
+      default: Date.now
+    }
+  }],
     currentActivityLevel: {
     type: String, // e.g., 'sedentary', 'active', 'very active'
     default: '',

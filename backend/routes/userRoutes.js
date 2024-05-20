@@ -140,4 +140,51 @@ router.get('/user/:username', async (req, res) => {
     }
 });
 
+// Update or add a new weight entry
+router.post('/update-weight', async (req, res) => {
+    const { username, weight, date } = req.body;
+
+    try {
+        const user = await User.findOne({ username });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Check if weight entry for the specific date exists
+        const existingIndex = user.weights.findIndex(w => w.date.toISOString().slice(0, 10) === new Date(date).toISOString().slice(0, 10));
+
+        if (existingIndex > -1) {
+            // Update existing weight entry
+            user.weights[existingIndex].weight = weight;
+        } else {
+            // Add new weight entry if not found
+            user.weights.push({ weight, date });
+        }
+
+        await user.save();
+        res.json({ message: 'Weight updated successfully', weights: user.weights });
+    } catch (error) {
+        console.error('Error updating user weight:', error);
+        res.status(500).json({ message: 'Error updating weight', error });
+    }
+});
+
+
+// GET weights for a specific user
+router.get('/get-weights', async (req, res) => {
+    const { username } = req.query; // Assuming username is passed as a query parameter
+    try {
+        const user = await User.findOne({ username }).select('weights -_id'); // Select only weights and exclude _id
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.json({ weights: user.weights });
+    } catch (error) {
+        console.error('Error retrieving weights:', error);
+        res.status(500).json({ message: 'Error retrieving user weights', error });
+    }
+});
+
+
+
 module.exports = router;

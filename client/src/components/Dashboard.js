@@ -1,6 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import UserDetails from './UserDetails';
+import MacroWidget from './MacroWidget'; 
+import WeightInputWidget from './WeightInputWidget'; 
+import WeightGraph from './WeightGraph'; 
+import WeightProgress from './WeightProgress';
+
 import './Dashboard.css';
 
 const Dashboard = () => {
@@ -19,6 +24,11 @@ const Dashboard = () => {
     navigate('/user-details');
   }
 
+  const goToWeightProgress = () => {
+  console.log("Navigating to Weight Progress");
+  navigate('/weight-progress');
+}
+
   return (
     <div className='dashboard'>
       <div className="dashboard-grid">
@@ -32,6 +42,8 @@ const Dashboard = () => {
               <li>Exercise</li>
               <li>Question</li>
               <li onClick={goToUserDetails}>User Details</li>
+              <li onClick={goToWeightProgress}>Weight Progress</li>
+
               <li onClick={handleLogout}>Signout</li>
             </ul>
           </nav>
@@ -41,19 +53,17 @@ const Dashboard = () => {
         <main className="dashboard-main-content">
           {/* Main Content Widgets */}
           {/* Replace these with actual components */}
-          <div className="widget steps-overview">Your Progress!.</div>
+          <div className="widget steps-overview">WeightGraph</div>
           <div className="widget nutrition">Weekly Workout</div>
-          <div className="widget nutrition">Weekly Diet</div>
-
           {/* ...other widgets */}
         </main>
 
          <aside className="dashboard-summary">
           {/* User Summary */}
           <div className="widget-row">
-            <div className="widget">Macro</div>
+            <div className="widget"><MacroWidget /></div>
             <div className="widget">Check-in</div>
-            <div className="widget">Input Weight</div>
+            <div className="widget"> <WeightInputWidget /></div>
             </div>
           {/* ...other summary details */}
         </aside>
