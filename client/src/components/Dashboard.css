@@ -61,6 +61,8 @@
     /* Adjust based on content */
 }
 
+
+
 /* Responsiveness */
 @media (max-width: 1200px) {
     .dashboard-grid {
@@ -79,6 +81,12 @@
     display: grid;
     /* Three columns */
     gap: 20px;
+}
+.chart-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    /* Adjust the margin as needed */
 }
 
 /* Further specific widget styling goes here */

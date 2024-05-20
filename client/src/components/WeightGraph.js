@@ -1,5 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 import { Line } from 'react-chartjs-2';
+
+// Register the necessary components for Chart.js
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const WeightGraph = ({ username }) => {
     const [chartData, setChartData] = useState({});
@@ -11,11 +23,12 @@ const WeightGraph = ({ username }) => {
             setLoading(true);
             try {
                 const response = await fetch(`http://localhost:5001/api/users/get-weights?username=${username}`);
+                const result = await response.json();
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    throw new Error(result.message || 'Network response was not ok');
                 }
-                const data = await response.json();
-                if (data.length > 0) {
+                const data = result.weights; // Assuming weights is nested in the response object
+                if (data && data.length > 0) {
                     setChartData({
                         labels: data.map(item => new Date(item.date).toLocaleDateString()),
                         datasets: [{
