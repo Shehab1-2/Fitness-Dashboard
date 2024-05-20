@@ -6,6 +6,7 @@ import Login from './components/Login';
 import CustomCursor from './components/CustomCursor';
 import Dashboard from './components/Dashboard';
 import CheckBMI from './components/CheckBMI';
+import UserDetails from './components/UserDetails';
 // import FitnessAnimation from './components/FitnessAnimation';
 import SurveyForm from './components/FitnessSurvey';
 import './App.css';
@@ -22,6 +23,8 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/check-bmi" element={<CheckBMI />} />
+          <Route path="/user-details" element={<UserDetails />} />
+
           {/* <Route path="/fitness-survey" element={<SurveyForm />} /> */}
         </Routes>
       </div>

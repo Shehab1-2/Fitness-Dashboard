@@ -1,9 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import UserDetails from './UserDetails';
 import './Dashboard.css';
 
 const Dashboard = () => {
   const username = localStorage.getItem('username');
+  console.log('Username:', username);
   const gender = localStorage.getItem('gender');
 
   const navigate = useNavigate();
@@ -12,6 +14,10 @@ const Dashboard = () => {
     localStorage.removeItem('username');
     navigate('/login');
   };
+
+  const goToUserDetails = () => {
+    navigate('/user-details');
+  }
 
   return (
     <div className='dashboard'>
@@ -22,9 +28,10 @@ const Dashboard = () => {
           {/* Sidebar Navigation */}
           <nav className="sidebar-nav">
             <ul>
-              <li>Welcome {gender}</li>
+              <li>Welcome {username || 'Guest'}</li> 
               <li>Exercise</li>
               <li>Question</li>
+              <li onClick={goToUserDetails}>User Details</li>
               <li onClick={handleLogout}>Signout</li>
             </ul>
           </nav>

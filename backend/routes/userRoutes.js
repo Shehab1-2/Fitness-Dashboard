@@ -125,4 +125,19 @@ router.post('/fitness-survey', async (req, res) => {
         res.status(500).json({ message: 'Error updating survey data', error: error });
     }
 });
+
+router.get('/user/:username', async (req, res) => {
+    try {
+        const username = req.params.username;
+        const user = await User.findOne({ username: username });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.json(user);
+    } catch (error) {
+        console.error('Error retrieving user data:', error);
+        res.status(500).json({ message: 'Error retrieving user data', error });
+    }
+});
+
 module.exports = router;
