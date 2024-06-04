@@ -47,8 +47,9 @@ const Signup = () => {
   };
 
   return (
+    
     <div className='signup'>
-      <Header />
+       <Header />
       <div className="signup-form-container">
         <form className="signup-form" onSubmit={handleSubmit}>
           <h2>Sign Up and Complete Your Fitness Survey</h2>

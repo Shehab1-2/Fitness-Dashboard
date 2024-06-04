@@ -3,17 +3,18 @@
     display: flex;
     justify-content: space-between;
     padding: 20px;
-    background-color: rgb(173, 167, 167);
+    width: 96%;
+    background-image: linear-gradient(to right, #1a1a2e, #16146f);
     /* Adjusted to match HomePage background */
-    color: white;
-    font-family: 'Courier New', monospace;
+    font-family: 'Orbitron', sans-serif;
     /* Consistent font family */
 }
 
 .logo {
     font-size: 1.5em;
+    color: white;
     font-weight: bold;
-    font-family: 'Courier New', monospace;
+    font-family: 'Orbitron', sans-serif;
     cursor: pointer;
     /* Indicates that the logo is clickable */
 }
@@ -26,7 +27,7 @@
     margin-left: 10px;
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s;
-    font-family: 'Courier New', monospace;
+    font-family: 'Orbitron', sans-serif;
     /* Consistent font family */
     border-radius: 25px;
     /* Rounded borders similar to other buttons */
@@ -36,6 +37,6 @@
     background-color: white;
     color: rgb(173, 167, 167);
     /* Hover color adjusted to match the HomePage background */
-    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 6px rgba(34, 34, 173, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
     /* Similar hover effect as HomePage buttons */
 }

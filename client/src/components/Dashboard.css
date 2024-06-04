@@ -1,33 +1,55 @@
+:root {
+    --primary-bg: #1a1a2e;
+    --secondary-bg: #33354a;
+    --text-color: #fff;
+    --font-family: 'Poppins', sans-serif;
+}
+
 .dashboard {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    font-family: 'Poppins', sans-serif;
-    color: #fff;
-    background-color: #1a1a2e;
+    font-family: var(--font-family);
+    color: var(--text-color);
+    background-color: var(--primary-bg);
 }
 
 .dashboard-grid {
     display: grid;
-    grid-template-columns: 250px 1fr 300px;
-    /* Left sidebar, main content, right sidebar */
+    grid-template-columns: 250px 1fr;
     gap: 20px;
     padding: 20px;
 }
 
-.dashboard-sidebar,
-.dashboard-summary {
+.dashboard-sidebar {
     display: grid;
-        grid-template-rows: auto auto auto;
-        /* Adjust based on content */
-        gap: 20px;
+    gap: 20px;
+    transform: translateX(-10px);
+    /* Move to the left by 10px */
+}
+
+.dashboard-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .dashboard-main-content {
     display: grid;
-    grid-template-rows: auto auto auto;
-    /* Adjust based on content */
     gap: 20px;
+}
+
+.dashboard-summary {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.dashboard-summary .widget {
+    flex: 1;
+    /* Ensure all widgets take equal space */
+    min-width: 0;
+    /* Allow flex items to shrink properly */
 }
 
 .sidebar-nav ul {
@@ -42,7 +64,7 @@
 }
 
 .sidebar-nav li:hover {
-    background-color: #33354a;
+    background-color: var(--secondary-bg);
 }
 
 .user-greeting h2 {
@@ -54,39 +76,92 @@
 }
 
 .widget {
-    background-color: #33354a;
+    background-color: var(--secondary-bg);
     border-radius: 10px;
     padding: 20px;
     min-height: 100px;
-    /* Adjust based on content */
+    transition: transform 0.2s ease-in-out;
+    overflow: hidden;
 }
 
+.widget:hover {
+    transform: scale(1.02);
+}
 
+.weekly-workout {
+    max-height: 700px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    /* To ensure that preformatted text wraps */
+    word-wrap: break-word;
+    /* To handle long words */
+    margin-bottom: 0;
+    /* Remove bottom margin */
+    padding: 10px;
+    border-radius: 8px;
+    color: var(--text-color);
+}
 
-/* Responsiveness */
-@media (max-width: 1200px) {
-    .dashboard-grid {
-        grid-template-columns: 1fr;
-        /* Stack on small screens */
-        grid-template-rows: auto 1fr auto;
-    }
+.workout-day {
+    margin-bottom: 10px;
+    border-radius: 8px;
+    overflow: hidden;
+}
 
-    .dashboard-sidebar,
-    .dashboard-summary {
-        margin-bottom: 20px;
-    }
+.workout-day-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: #66688f;
+    cursor: pointer;
+    border-bottom: 1px solid #44476a;
+}
+
+.workout-day-content {
+    padding: 10px 15px;
+}
+
+.workout-day-header h3 {
+    margin: 0;
+    font-size: 1.1em;
+    color: #ffcc00;
+}
+
+.workout-day-header span {
+    font-size: 1.2em;
 }
 
 .widget-row {
-    display: grid;
-    /* Three columns */
+    display: flex;
     gap: 20px;
+    margin-bottom: 0;
+    /* Remove bottom margin */
 }
+
+@media (max-width: 1200px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr auto;
+    }
+
+    .dashboard-summary {
+        flex-direction: column;
+    }
+}
+
 .chart-container {
     display: flex;
     justify-content: center;
     margin-bottom: 20px;
-    /* Adjust the margin as needed */
 }
 
-/* Further specific widget styling goes here */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}

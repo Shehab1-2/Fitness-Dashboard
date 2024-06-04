@@ -7,13 +7,13 @@
     flex-direction: column;
     /* Stack elements vertically */
     overflow: hidden;
-    background-color: rgb(173, 167, 167);
-    /* Set background to white */
-    font-family: 'Courier New', monospace;
+    background-image: linear-gradient(to right, #1a1a2e, #16146f);
+    color: #ffffff;
+    /* Dark background color */
+    color: #fff;
+    /* Set text color to white */
+    font-family: 'Orbitron', sans-serif;
 }
-
-/* If Header component has its own styles, you might not need to add additional styling here.
-   Otherwise, you can style your header as needed. */
 
 .content {
     font-weight: 700;
@@ -34,7 +34,6 @@
     transition: opacity 2s ease-in;
     opacity: 0;
     /* Start with invisible text */
-
 }
 
 .content.fade-in {
@@ -64,6 +63,7 @@
     background-image: linear-gradient(to right, #88898a, #a9c8f2);
     /* Example gradient; adjust the colors to match your image */
     color: rgb(0, 0, 0);
+    /* Text color for the button */
     font-size: 1.5em;
     font-weight: 700;
     cursor: pointer;
@@ -72,7 +72,7 @@
     /* Example shadow; adjust as needed */
     transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s;
     animation: flickerAnimation 1s infinite;
-    font-family: 'Courier New', monospace;
+    font-family: 'Orbitron', sans-serif;
 }
 
 @keyframes flickerAnimation {

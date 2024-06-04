@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
+import { useNavigate } from 'react-router-dom';
+import './UserDetails.css';
+import SideNav from './SideNav'; // Import the SideNav component
 
 const UserDetails = () => {
     const [userData, setUserData] = useState(null);
     const username = localStorage.getItem('username');
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -18,10 +21,9 @@ const UserDetails = () => {
                     throw new Error('Failed to fetch user details');
                 }
                 const data = await response.json();
-                // Sort the weights by date in descending order and pick the first entry (most recent)
                 if (data.weights && data.weights.length > 0) {
                     data.weights.sort((a, b) => new Date(b.date) - new Date(a.date));
-                    data.mostRecentWeight = data.weights[0].weight; // Store the most recent weight
+                    data.mostRecentWeight = data.weights[0].weight;
                 }
                 setUserData(data);
             } catch (error) {
@@ -37,17 +39,22 @@ const UserDetails = () => {
     }
 
     return (
-        <div className="user-details">
-            <h2>User Details</h2>
-            <p>Username: {userData.username}</p>
-            <p>Gender: {userData.gender}</p>
-            <p>Height: {userData.height} cm</p>
-            <p>Weight: {userData.mostRecentWeight || 'No recent weight'} kg</p>
-            <p>Fitness Goal: {userData.fitnessGoals}</p>
-            <p>Current Fitness Level: {userData.currentActivityLevel}</p>
-            <p>Diet: {userData.dietaryPreferences}</p>
-            
-            {/* Display more user details here */}
+        <div className="user-details-dashboard">
+            <div className="dashboard-grid">
+                <SideNav /> {/* Include the SideNav component */}
+
+                <div className="dashboard-main-content">
+                    <div className="widget user-details">
+                        <p>Username: {userData.username[0].toUpperCase() + userData.username.substring(1)}</p>
+                        <p>Gender: {userData.gender[0].toUpperCase() + userData.gender.substring(1)}</p>
+                        <p>Height: {userData.height} ft</p>
+                        <p>Weight: {userData.mostRecentWeight || 'No recent weight'} lb</p>
+                        <p>Fitness Goal: {userData.fitnessGoals[0].toUpperCase() + userData.fitnessGoals.substring(1)}</p>
+                        <p>Current Fitness Level: {userData.currentActivityLevel}</p>
+                        <p>Diet: {userData.dietaryPreferences[0].toUpperCase() + userData.dietaryPreferences.substring(1)}</p>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };

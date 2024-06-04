@@ -7,8 +7,10 @@
     flex-direction: column;
     /* This will align children horizontally */
     overflow: hidden;
-    background-color: rgb(173, 167, 167);
-    font-family: 'Courier New', monospace;
+    background-image: linear-gradient(to right, #1a1a2e, #16146f);
+    font-family: 'Orbitron', sans-serif;
+    
+
 }
 
 .login-form-container {
@@ -48,8 +50,8 @@
     margin-bottom: 20px;
 }
 
-input[type="email"],
-input[type="password"],
+input[type="Email"],
+input[type="Password"],
 input[type="text"] {
     width: 100%;
     padding: 10px;
@@ -71,7 +73,7 @@ button[type="submit"] {
     outline: none;
     box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
     transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s;
-    font-family: 'Courier New', monospace;
+    font-family: 'Orbitron', sans-serif;
 }
 
 button[type="submit"]:hover {
