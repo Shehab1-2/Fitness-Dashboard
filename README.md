@@ -14,8 +14,7 @@ FitMe, also known as Fit.Io, is a comprehensive full-stack fitness application c
 
 ## Demo
 
-![Demo](demo/login.gif)
-
+![Demo]([https://i.imgur.com/your-image-id.gif)
 
 ## Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
