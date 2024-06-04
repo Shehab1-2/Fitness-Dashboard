@@ -12,9 +12,6 @@ FitMe, also known as Fit.Io, is a comprehensive full-stack fitness application c
 - **AI-Driven Insights**: Utilizes artificial intelligence to provide personalized fitness and diet plans, adapting to user progress and feedback for optimized outcomes.
 - **Dynamic Data Visualization**: Incorporates live updating graphs and charts for real-time data visualization and analysis, using React-based libraries like Recharts or Victory.
 
-## Demo
-
-![Demo]([https://i.imgur.com/your-image-id.gif)
 
 ## Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
