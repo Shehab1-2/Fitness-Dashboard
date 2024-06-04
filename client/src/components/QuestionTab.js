@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './QuestionTab.css';
-import SideNav from './SideNav'; // Import the SideNav component
+import SideNav from './SideNav';
 
 const QuestionTab = () => {
     const [question, setQuestion] = useState('');
@@ -15,11 +15,26 @@ const QuestionTab = () => {
     const handleSubmit = async () => {
         setLoading(true);
         setError(''); // Clear any previous errors
+
+        const prompt = `
+        You are an AI assistant specializing exclusively in providing workout and fitness-related advice. Regardless of the question asked, respond with answers that are strictly related to workouts, fitness routines, exercise techniques, or anything within the scope of physical fitness. Ignore any non-fitness-related inquiries. Here are some example categories you should focus on:
+
+        Workout Routines (e.g., strength training, cardio, flexibility exercises)
+        Exercise Techniques (e.g., proper form for squats, how to do a push-up correctly)
+        Fitness Tips (e.g., how to stay motivated, benefits of regular exercise)
+        Workout Plans (e.g., plans for beginners, intermediate, or advanced levels)
+        Fitness Equipment (e.g., how to use dumbbells, kettlebell exercises)
+        Recovery (e.g., stretching routines, foam rolling techniques)
+        Nutrition for Fitness (e.g., pre-workout meals, post-workout nutrition)
+
+        Always ensure that your responses are concise, clear, and strictly confined to workout and fitness-related topics.
+        `;
+
         try {
             const result = await fetch('http://localhost:5001/api/chatgpt', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ question }),
+                body: JSON.stringify({ question: `${prompt}\n${question}` }),
             });
 
             console.log('Response from server:', result);
