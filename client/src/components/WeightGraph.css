@@ -1,0 +1,25 @@
+.chart-container {
+    display: flex;
+    justify-content: center;
+    /* Center horizontally */
+    align-items: center;
+    /* Center vertically */
+    width: 100%;
+}
+
+.recharts-tooltip-wrapper {
+    background-color: rgba(0, 0, 0, 0.7) !important;
+    color: #fff !important;
+}
+
+.recharts-legend-item text {
+    fill: #fff !important;
+}
+
+.recharts-cartesian-axis-tick line {
+    stroke: #fff !important;
+}
+
+.recharts-cartesian-axis-tick text {
+    fill: #fff !important;
+}

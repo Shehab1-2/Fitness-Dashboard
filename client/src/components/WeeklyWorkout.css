@@ -1,0 +1,132 @@
+body,
+html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background-color: #1a1a2e;
+    font-family: 'Orbitron', sans-serif;
+    color: #fff;
+}
+
+.weekly-workout-dashboard {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 20px;
+    padding: 20px;
+}
+
+.weekly-workout-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #33354a;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.weekly-workout-content h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group select,
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #444;
+    color: #fff;
+}
+
+.button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #0d0d1a;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button:disabled {
+    background-color: #555;
+}
+
+.button:hover:enabled {
+    background-color: #33354a;
+}
+
+.error {
+    margin-top: 20px;
+    background-color: #ff4c4c;
+    padding: 10px;
+    border-radius: 5px;
+    color: #fff;
+}
+
+.workout-plan {
+    margin-top: 20px;
+    background-color: #444;
+    padding: 20px;
+    border-radius: 5px;
+    max-height: 400px;
+    /* Adjust based on your layout needs */
+    overflow-y: auto;
+}
+
+.workout-plan h3 {
+    margin: 0 0 10px;
+}
+
+.workout-plan pre {
+    margin: 0;
+    white-space: pre-wrap;
+    /* Ensures long text wraps to the next line */
+    word-wrap: break-word;
+    /* Breaks long words to fit within the container */
+}
+
+/* SideNav Styles */
+.sidenav {
+    background-color: #1a1a2e;
+    color: #fff;
+    width: 250px;
+    padding: 20px;
+    box-sizing: border-box;
+    height: 100vh;
+}
+
+.sidebar-nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar-nav li {
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.sidebar-nav li:hover {
+    background-color: #33354a;
+}

@@ -1,20 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
-import { Line } from 'react-chartjs-2';
-
-// Register the necessary components for Chart.js
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
+import {
+  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
+} from 'recharts';
+import './WeightGraph.css'; // Ensure this is correctly importing the CSS
 
 const WeightGraph = ({ username }) => {
-    const [chartData, setChartData] = useState({});
+    const [chartData, setChartData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -27,21 +18,11 @@ const WeightGraph = ({ username }) => {
                 if (!response.ok) {
                     throw new Error(result.message || 'Network response was not ok');
                 }
-                const data = result.weights; // Assuming weights is nested in the response object
-                if (data && data.length > 0) {
-                    setChartData({
-                        labels: data.map(item => new Date(item.date).toLocaleDateString()),
-                        datasets: [{
-                            label: 'Weight over time',
-                            data: data.map(item => item.weight),
-                            fill: false,
-                            backgroundColor: 'rgb(75, 192, 192)',
-                            borderColor: 'rgba(75, 192, 192, 0.2)',
-                        }],
-                    });
-                } else {
-                    setError('No weight data available for this user.');
-                }
+                const data = result.weights.map(item => ({
+                    date: new Date(item.date).toLocaleDateString(),
+                    weight: item.weight
+                }));
+                setChartData(data);
             } catch (error) {
                 console.error('Failed to fetch weight data:', error);
                 setError(error.message);
@@ -55,10 +36,19 @@ const WeightGraph = ({ username }) => {
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
 
-    return chartData && chartData.datasets && chartData.datasets.length > 0 ? (
-        <Line data={chartData} options={{ responsive: true }} />
-    ) : (
-        <p>No weight data to display.</p>
+    return (
+        <div className="chart-container">
+            <ResponsiveContainer width="100%" height={400}>
+                <LineChart data={chartData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="date" stroke="#fff" />
+                    <YAxis stroke="#fff" />
+                    <Tooltip contentStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.7)', color: '#fff' }} />
+                    <Legend />
+                    <Line type="monotone" dataKey="weight" stroke="#82ca9d" activeDot={{ r: 8 }} />
+                </LineChart>
+            </ResponsiveContainer>
+        </div>
     );
 };
 

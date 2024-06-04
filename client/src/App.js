@@ -10,6 +10,8 @@ import UserDetails from './components/UserDetails';
 // import FitnessAnimation from './components/FitnessAnimation';
 import SurveyForm from './components/FitnessSurvey';
 import WeightProgress from './components/WeightProgress';
+import QuestionTab from './components/QuestionTab';
+import WeeklyWorkout from './components/WeeklyWorkout';
 import './App.css';
 
 const App = () => {
@@ -26,6 +28,10 @@ const App = () => {
           <Route path="/check-bmi" element={<CheckBMI />} />
           <Route path="/user-details" element={<UserDetails />} />
           <Route path="/weight-progress" element={<WeightProgress />} />
+          <Route path="/question" element={<QuestionTab />} />
+          <Route path="/exercise" element={<WeeklyWorkout />} />
+
+
 
 
           {/* <Route path="/fitness-survey" element={<SurveyForm />} /> */}
