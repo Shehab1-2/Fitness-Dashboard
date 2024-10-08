@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import UserHeader from './UserHeader';
 import { useNavigate } from 'react-router-dom';
-import './CheckBMI.css';
+import './styles/CheckBMI.css';
 
 const CheckBMI = () => {
   const [height, setHeight] = useState('');

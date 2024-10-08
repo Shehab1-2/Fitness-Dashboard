@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
+import { useNavigate } from 'react-router-dom';
 import './Login.css';
 import Header from './Header';
 import Dashboard from './Dashboard';
@@ -11,6 +11,12 @@ const Login = () => {
   });
   const navigate = useNavigate();
 
+  // Default credentials (hardcoded for offline use)
+  const defaultCredentials = {
+    username: 'admin',
+    password: 'password123', // Replace with your preferred credentials
+  };
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -19,7 +25,6 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      // Replace 'REACT_APP_API_URL' with your actual environment variable
       const response = await fetch(`http://localhost:5001/api/users/login`, {
         method: 'POST',
         headers: {
@@ -31,21 +36,37 @@ const Login = () => {
         }),
       });
 
-      const data = await response.json();
-      if (response.status === 200) {
-        // Handle successful login
+      if (response.ok) {
+        // Successful cloud-based login
+        const data = await response.json();
         localStorage.setItem('username', formData.username);
-        // For example, store the user token in local storage or context
-        // localStorage.setItem('userToken', data.token); // Uncomment if you're using JWT tokens
         alert('Login successful');
-        navigate('/dashboard'); // Navigate to the dashboard
+        navigate('/dashboard');
       } else {
-        // Handle errors, e.g., invalid credentials
-        alert(data.message || 'Login failed');
+        // Handle cloud-based login error (non-200 status)
+        console.log('Server responded with an error, checking local credentials...');
+        fallbackToLocalCredentials();
       }
     } catch (error) {
-      // Handle network errors
-      alert('Login request failed: ' + error.message);
+      // Network error or server unreachable
+      console.log('Network or server error, checking local credentials...', error.message);
+      fallbackToLocalCredentials();
+    }
+  };
+
+  // Fallback to local credentials in case of server failure or error
+  const fallbackToLocalCredentials = () => {
+    if (
+      formData.username === defaultCredentials.username &&
+      formData.password === defaultCredentials.password
+    ) {
+      // Successful local login
+      localStorage.setItem('username', formData.username);
+      alert('Login successful (local)');
+      navigate('/dashboard');
+    } else {
+      // If the credentials are invalid, show an error
+      alert('Invalid credentials (offline mode)');
     }
   };
 

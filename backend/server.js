@@ -3,23 +3,25 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const userRoutes = require('./routes/userRoutes'); // Import user routes
+const userRoutes = require('./routes/userRoutes');
 const session = require('express-session');
-const OpenAI = require('openai'); // Correct import for the newer version
+const OpenAI = require('openai');
 
 const app = express();
 console.log('MongoDB URI:', process.env.URI);
 
 // Connect to MongoDB
-const mongoDB = process.env.URI;
+const mongoDB = 'mongodb+srv://admin:sheHAB0730%40@fit.lmpyceb.mongodb.net/myDatabase?retryWrites=true&w=majority';
+// Use the URI from .env
 mongoose.connect(mongoDB)
   .then(() => console.log('DB Connected!'))
   .catch(err => {
     console.log(`DB Connection Error: ${err.message}`);
   });
 
+
 app.use(cors());
-app.use(express.json()); // Parse JSON bodies
+app.use(express.json());
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'build')));
@@ -41,7 +43,7 @@ app.get('/api/data', (req, res) => {
 
 // Configure OpenAI API
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: process.env.OPENAI_API_KEY, // Use OpenAI key from .env
 });
 
 // New API endpoint for ChatGPT

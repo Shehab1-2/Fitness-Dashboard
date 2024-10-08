@@ -4,6 +4,10 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const User = require('../models/usersModel'); // Adjust the path according to your structure
 
+const adminCredentials = {
+    username: 'admin',
+    password: "password123", // Hash the admin password, fallback to 'password123' for dev
+  };
 // POST /signup route for registering a new user
 router.post('/signup', async (req, res) => {
   try {
@@ -38,32 +42,40 @@ router.post('/signup', async (req, res) => {
   }
 });
 
+// POST /login route
 router.post('/login', async (req, res) => {
     console.log(req.body);
-  try {
-    const { username, password } = req.body;
-    const user = await User.findOne({ username });
-    console.log("User Found: ", user)
-
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+    try {
+      const { username, password } = req.body;
+  
+      // Check if the login is for the admin user
+      if (username === adminCredentials.username && password === adminCredentials.password) {
+        // Successful admin login
+        console.log('Admin logged in');
+        return res.status(200).json({ message: 'Admin login successful', user: 'admin' });
+      }
+  
+      // Proceed with normal user login
+      const user = await User.findOne({ username });
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
+        console.log('Invalid credentials');
+        return res.status(401).json({ message: 'Invalid credentials' });
+      }
+  
+      // Successful user login
+      console.log('User logged in:', user.username);
+      return res.status(200).json({ message: 'Login successful', user: user._id });
+    } catch (error) {
+      console.error('Error during login:', error);
+      return res.status(500).json({ message: 'Server error' });
     }
-
-    const isMatch = await bcrypt.compare(password, user.password);
-    console.log(user.password);
-    console.log(password);
-    if (isMatch) {
-        console.log(!isMatch);
-      return res.status(400).json({ message: 'Invalid credentials' });
-    }
-
-    // If login is successful, send a positive response
-    res.status(200).json({ message: 'Login successful', user: user._id });
-    // Optionally, you could create and send a JWT token here
-  } catch (error) {
-    res.status(500).json({ message: 'Server error' });
-  }
-});
+  });
+  
 
 
 
