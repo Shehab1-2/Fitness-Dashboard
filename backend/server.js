@@ -8,10 +8,12 @@ const session = require('express-session');
 const OpenAI = require('openai'); // Correct import for the newer version
 
 const app = express();
-console.log('MongoDB URI:', process.env.URI);
+//console.log('MongoDB URI:', process.env.URI);
 
 // Connect to MongoDB
-const mongoDB = process.env.URI;
+const mongoDB = 'mongodb+srv://admin:Shehab123@fit.lmpyceb.mongodb.net/myDatabase?retryWrites=true&w=majority';
+
+
 mongoose.connect(mongoDB)
   .then(() => console.log('DB Connected!'))
   .catch(err => {
@@ -46,6 +48,7 @@ app.get('/api/data', (req, res) => {
 });
 */
 // New API endpoint for ChatGPT
+
 app.post('/api/chatgpt', async (req, res) => {
   const { question } = req.body;
 
