@@ -40,10 +40,11 @@ app.get('/api/data', (req, res) => {
 });
 
 // Configure OpenAI API
-const openai = new OpenAI({
+
+/*const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
-
+*/
 // New API endpoint for ChatGPT
 app.post('/api/chatgpt', async (req, res) => {
   const { question } = req.body;
