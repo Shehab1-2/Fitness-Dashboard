@@ -1,13 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import UserDetails from './UserDetails';
-import MacroWidget from './MacroWidget'; 
-import WeightInputWidget from './WeightInputWidget'; 
-import WeightGraph from './WeightGraph';
-import WeightProgress from './WeightProgress';
-import QuestionTab from './QuestionTab';
-import Goal from './Goal';
 import SideNav from './SideNav';
+import Goal from './Goal';
+import MacroWidget from './MacroWidget';
+import WeightInputWidget from './WeightInputWidget';
 import './Dashboard.css';
 
 const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
@@ -64,7 +59,7 @@ const Dashboard = () => {
     <div className='dashboard'>
       <div className="dashboard-grid">
         <SideNav />
-        
+
         <div className="dashboard-content">
           <main className="dashboard-main-content">
             <div className="widget weekly-workout">
@@ -75,31 +70,36 @@ const Dashboard = () => {
                 <p>{error}</p>
               ) : (
                 daysOfWeek.map(day => (
-                  <div key={day} className="workout-day">
+                  <div key={day} className={`workout-day ${expandedDay === day ? 'expanded' : ''}`}>
                     <div className="workout-day-header" onClick={() => toggleDay(day)}>
                       <h3>{day}</h3>
                       <span>{expandedDay === day ? '-' : '+'}</span>
                     </div>
-                    {expandedDay === day && (
-                      <div className="workout-day-content">
-                        {workoutPlan[day] ? (
-                          workoutPlan[day].map((exercise, index) => (
-                            <p key={index}>{exercise}</p>
-                          ))
-                        ) : (
-                          <p>No workout for {day}</p>
-                        )}
-                      </div>
-                    )}
+                    <div className="workout-day-content">
+                      {workoutPlan[day] ? (
+                        workoutPlan[day].map((exercise, index) => (
+                          <p key={index}>{exercise}</p>
+                        ))
+                      ) : (
+                        <p>No workout for {day}</p>
+                      )}
+                    </div>
                   </div>
                 ))
               )}
             </div>
           </main>
           <div className="dashboard-summary">
-            <div className="widget"><Goal /></div>
-            <div className="widget"><MacroWidget /></div>
-            <div className="widget"> Check-In <WeightInputWidget /></div>
+            <div className="widget">
+              <Goal />
+            </div>
+            <div className="widget">
+              <MacroWidget />
+            </div>
+            <div className="widget">
+              <h2>Check-In</h2>
+              <WeightInputWidget />
+            </div>
           </div>
         </div>
       </div>
