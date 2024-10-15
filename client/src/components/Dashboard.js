@@ -59,7 +59,6 @@ const Dashboard = () => {
     <div className='dashboard'>
       <div className="dashboard-grid">
         <SideNav />
-
         <div className="dashboard-content">
           <main className="dashboard-main-content">
             <div className="widget weekly-workout">

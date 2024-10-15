@@ -17,17 +17,46 @@ const UserDetails = () => {
 
             try {
                 const response = await fetch(`http://localhost:5001/api/users/user/${username}`);
+                let data;
+                
+                // Check if the server response is OK
                 if (!response.ok) {
-                    throw new Error('Failed to fetch user details');
+                    // Use dummy data if the server request fails
+                    data = {
+                        "username": "admin",
+                        "gender": "Male",
+                        "height": 80,
+                        "fitnessGoals": "lose weight",
+                        "weights": [],
+                        "currentActivityLevel": "active",
+                        "dietaryPreferences": "vegan"
+                    };
+                } else {
+                    // Parse the response data if the request was successful
+                    data = await response.json();
                 }
-                const data = await response.json();
+
+                // Sort the weights by date and get the most recent weight
                 if (data.weights && data.weights.length > 0) {
                     data.weights.sort((a, b) => new Date(b.date) - new Date(a.date));
                     data.mostRecentWeight = data.weights[0].weight;
                 }
+
+                // Set the userData state with the fetched or dummy data
                 setUserData(data);
             } catch (error) {
                 console.error('Error fetching user data:', error);
+
+                // Use dummy data in case of a network or fetch error
+                setUserData({
+                    "username": "admin",
+                    "gender": "Male",
+                    "height": 80,
+                    "fitnessGoals": "lose weight",
+                    "weights": [],
+                    "currentActivityLevel": "active",
+                    "dietaryPreferences": "vegan"
+                });
             }
         };
 
@@ -38,6 +67,9 @@ const UserDetails = () => {
         return <p>Loading user details...</p>;
     }
 
+    // Helper function for capitalizing strings safely
+    const capitalize = (str) => str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
+
     return (
         <div className="user-details-dashboard">
             <div className="dashboard-grid">
@@ -45,13 +77,13 @@ const UserDetails = () => {
 
                 <div className="dashboard-main-content">
                     <div className="widget user-details">
-                        <p>Username: {userData.username[0].toUpperCase() + userData.username.substring(1)}</p>
-                        <p>Gender: {userData.gender[0].toUpperCase() + userData.gender.substring(1)}</p>
+                        <p>Username: {capitalize(userData.username)}</p>
+                        <p>Gender: {capitalize(userData.gender)}</p>
                         <p>Height: {userData.height} ft</p>
                         <p>Weight: {userData.mostRecentWeight || 'No recent weight'} lb</p>
-                        <p>Fitness Goal: {userData.fitnessGoals[0].toUpperCase() + userData.fitnessGoals.substring(1)}</p>
-                        <p>Current Fitness Level: {userData.currentActivityLevel}</p>
-                        <p>Diet: {userData.dietaryPreferences[0].toUpperCase() + userData.dietaryPreferences.substring(1)}</p>
+                        <p>Fitness Goal: {capitalize(userData.fitnessGoals)}</p>
+                        <p>Current Fitness Level: {capitalize(userData.currentActivityLevel)}</p>
+                        <p>Diet: {capitalize(userData.dietaryPreferences)}</p>
                     </div>
                 </div>
             </div>

@@ -1,45 +1,57 @@
 /* src/components/Login.css */
 
+/* Root Variables */
+:root {
+    --primary-bg: #121212;          /* Near-black background */
+    --secondary-bg: #1E1E1E;        /* Slightly lighter for form background */
+    --accent-color: #FF8C00;        /* Dark orange */
+    --text-color: #FFFFFF;          /* White text */
+    --muted-text-color: #B3B3B3;    /* Muted gray text */
+    --font-family: 'Poppins', sans-serif;
+}
+
+/* Reset Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Login Page Styles */
 .login {
     position: relative;
     height: 100vh;
     display: flex;
     flex-direction: column;
-    /* This will align children horizontally */
     overflow: hidden;
-    background-image: linear-gradient(to right, #1a1a2e, #16146f);
-    font-family: 'Orbitron', sans-serif;
-    
-
+    background-color: var(--primary-bg);
+    font-family: var(--font-family);
 }
 
+/* Login Form Container */
 .login-form-container {
     flex-grow: 1;
     display: flex;
     justify-content: center;
-    /* Center form vertically */
     align-items: center;
-    /* Center form horizontally */
     width: 100%;
 }
 
-
+/* Login Form */
 .login-form {
-    max-width: 300px;
-    padding: 20px;
-    background-color: #fff;
-    /* Light background for the form */
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    padding: 30px;
+    background-color: var(--secondary-bg);
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
     animation: fadeIn 2s ease-in;
-    /* Fade-in animation similar to HomePage */
 }
 
 @keyframes fadeIn {
     from {
         opacity: 0;
     }
-
     to {
         opacity: 1;
     }
@@ -48,41 +60,71 @@
 .login-form h2 {
     text-align: center;
     margin-bottom: 20px;
+    color: var(--text-color);
 }
 
-input[type="Email"],
-input[type="Password"],
-input[type="text"] {
+/* Input Fields */
+.login-form input[type="email"],
+.login-form input[type="password"],
+.login-form input[type="text"] {
     width: 100%;
-    padding: 10px;
+    padding: 12px 15px;
     margin: 10px 0;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-sizing: border-box;
+    border: 1px solid #444444;
+    border-radius: 6px;
+    background-color: var(--primary-bg);
+    color: var(--text-color);
+    font-size: 1em;
 }
 
-button[type="submit"] {
+.login-form input::placeholder {
+    color: var(--muted-text-color);
+}
+
+/* Submit Button */
+.login-form button[type="submit"] {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     border: none;
     border-radius: 25px;
-    background-image: linear-gradient(to right, #88898a, #a9c8f2);
-    color: rgb(0, 0, 0);
-    font-size: 1em;
+    background-color: var(--accent-color);
+    color: var(--text-color);
+    font-size: 1.1em;
     cursor: pointer;
     outline: none;
-    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+    font-family: var(--font-family);
     transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s;
-    font-family: 'Orbitron', sans-serif;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
-button[type="submit"]:hover {
-    background-image: linear-gradient(to right, #50b2f0, #2e7cdb);
-    transform: translateY(-2px);
-    box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+.login-form button[type="submit"]:hover {
+    background-color: #e07c00;
+    transform: translateY(-3px);
+    box-shadow: 0 7px 14px rgba(0, 0, 0, 0.5);
 }
 
-button[type="submit"]:active {
+.login-form button[type="submit"]:active {
     transform: translateY(0);
-    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.login-form button[type="submit"]:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255, 140, 0, 0.5);
+}
+
+/* Additional Text (e.g., links) */
+.login-form .additional-text {
+    text-align: center;
+    margin-top: 15px;
+    color: var(--muted-text-color);
+}
+
+.login-form .additional-text a {
+    color: var(--accent-color);
+    text-decoration: none;
+}
+
+.login-form .additional-text a:hover {
+    text-decoration: underline;
 }

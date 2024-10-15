@@ -1,19 +1,37 @@
-body,
-html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    background-color: #1a1a2e;
-    font-family: 'Courier New', monospace;
-    color: #fff;
+/* Root Variables */
+:root {
+    --primary-bg: #121212;        /* Near-black background */
+    --secondary-bg: #1E1E1E;      /* Slightly lighter for cards */
+    --accent-color: #FF8C00;      /* Dark Orange */
+    --text-color: #FFFFFF;        /* White text */
+    --muted-text-color: #B3B3B3;  /* Muted gray text */
+    --font-family: 'Poppins', sans-serif;
 }
 
+/* Reset Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Body Styles */
+body,
+html {
+    height: 100%;
+    background-color: var(--primary-bg);
+    font-family: var(--font-family);
+    color: var(--text-color);
+}
+
+/* User Details Dashboard */
 .user-details-dashboard {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
 
+/* Dashboard Grid */
 .dashboard-grid {
     display: grid;
     grid-template-columns: 250px 1fr;
@@ -21,6 +39,7 @@ html {
     padding: 20px;
 }
 
+/* Dashboard Main Content */
 .dashboard-main-content {
     display: flex;
     flex-direction: column;
@@ -29,32 +48,39 @@ html {
     margin: 0 auto;
     padding: 20px;
     border-radius: 10px;
+    background-color: var(--secondary-bg);
+    color: var(--text-color);
 }
 
+/* User Details */
 .user-details {
-    background-color: #1a1a2e;
+    background-color: var(--primary-bg);
     animation: fadeIn 1s ease-in;
+    color: var(--text-color);
 }
 
+/* Sidebar Navigation */
 .sidebar-nav ul {
     list-style: none;
     padding: 0;
+    margin: 0;
 }
 
 .sidebar-nav li {
     padding: 10px 0;
     cursor: pointer;
+    color: var(--text-color);
 }
 
 .sidebar-nav li:hover {
-    background-color: #33354a;
+    background-color: rgba(255, 140, 0, 0.2); /* Dark orange hover */
 }
 
+/* Fade-in Animation */
 @keyframes fadeIn {
     from {
         opacity: 0;
     }
-
     to {
         opacity: 1;
     }
@@ -62,10 +88,11 @@ html {
 
 /* SideNav Styles */
 .sidenav {
-    background-color: #1a1a2e;
-    color: #fff;
+    background-color: var(--primary-bg);
+    color: var(--text-color);
     width: 250px;
     padding: 20px;
     box-sizing: border-box;
     height: 100vh;
+    font-family: var(--font-family);
 }

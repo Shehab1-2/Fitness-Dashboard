@@ -1,104 +1,125 @@
 /* src/components/HomePage.css */
+
+:root {
+    --primary-bg: #121212;          /* Near-black background */
+    --accent-bg: #1E1E1E;           /* Slightly lighter for overlays */
+    --accent-color: #FF8C00;        /* Dark orange */
+    --text-color: #FFFFFF;          /* White text */
+    --muted-text-color: #B3B3B3;    /* Muted gray text */
+    --font-family: 'Poppins', sans-serif;
+}
+
+/* Reset Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Homepage Styles */
 .homepage {
     position: relative;
     height: 100vh;
-    /* Full viewport height */
     display: flex;
     flex-direction: column;
-    /* Stack elements vertically */
     overflow: hidden;
-    background-image: linear-gradient(to right, #1a1a2e, #16146f);
-    color: #ffffff;
-    /* Dark background color */
-    color: #fff;
-    /* Set text color to white */
-    font-family: 'Orbitron', sans-serif;
+    background-color: var(--primary-bg);
+    color: var(--text-color);
+    font-family: var(--font-family);
 }
 
+/* Content Styles */
 .content {
-    font-weight: 700;
-    line-height: 1.5;
     flex-grow: 1;
-    /* Take up remaining space */
     display: flex;
     flex-direction: column;
-    /* Stack elements vertically */
     justify-content: center;
-    /* Center content vertically */
     align-items: center;
-    /* Center content horizontally */
     text-align: center;
     z-index: 1;
     padding: 20px;
-    /* Add some padding */
     transition: opacity 2s ease-in;
     opacity: 0;
-    /* Start with invisible text */
 }
 
 .content.fade-in {
     opacity: 1;
-    /* Fade in to full visibility */
 }
 
 .content h1 {
     font-size: 2.5em;
-    /* Adjust font size as necessary */
     margin-bottom: 0.5em;
-    /* Space between the heading and paragraph */
+    color: var(--text-color);
 }
 
 .content p {
-    font-size: 1em;
-    /* Adjust paragraph font size as necessary */
+    font-size: 1.2em;
     max-width: 600px;
-    /* Set a max-width for better readability on larger screens */
+    color: var(--muted-text-color);
+    margin-bottom: 1.5em;
 }
 
+/* Start Now Button */
 .start-now-btn {
-    padding: 10px 20px;
+    padding: 15px 30px;
     border: none;
-    border-radius: 25px;
-    /* Adjust to match the roundness of the button in the image */
-    background-image: linear-gradient(to right, #88898a, #a9c8f2);
-    /* Example gradient; adjust the colors to match your image */
-    color: rgb(0, 0, 0);
-    /* Text color for the button */
-    font-size: 1.5em;
+    border-radius: 30px;
+    background-color: var(--accent-color);
+    color: var(--text-color);
+    font-size: 1.2em;
     font-weight: 700;
     cursor: pointer;
     outline: none;
-    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-    /* Example shadow; adjust as needed */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s;
-    animation: flickerAnimation 1s infinite;
-    font-family: 'Orbitron', sans-serif;
+    font-family: var(--font-family);
 }
 
+.start-now-btn:hover {
+    background-color: #e07c00; /* Slightly darker on hover */
+    transform: translateY(-3px);
+    box-shadow: 0 7px 14px rgba(0, 0, 0, 0.5);
+}
+
+.start-now-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.start-now-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255, 140, 0, 0.5);
+}
+
+/* Flicker Animation */
 @keyframes flickerAnimation {
     0% {
         opacity: 1;
     }
-
     50% {
-        opacity: 0.5;
+        opacity: 0.7;
     }
-
     100% {
         opacity: 1;
     }
 }
 
-.start-now-btn:hover {
-    background-image: linear-gradient(to right, #50b2f0, #2e7cdb);
-    /* Darken gradient on hover */
-    transform: translateY(-2px);
-    box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
-    /* Increase shadow on hover */
+.start-now-btn {
+    animation: flickerAnimation 2s infinite;
 }
 
-.start-now-btn:active {
-    transform: translateY(0);
-    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-    /* Reset shadow on click */
+/* Header Styles (if any) */
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .content h1 {
+        font-size: 2em;
+    }
+    .content p {
+        font-size: 1em;
+    }
+    .start-now-btn {
+        font-size: 1em;
+        padding: 12px 24px;
+    }
 }
