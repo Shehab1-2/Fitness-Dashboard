@@ -1,42 +1,51 @@
 /* src/components/Header.css */
+
+/* Root Variables */
+:root {
+    --primary-bg: #121212;      /* Adjust to your primary background color */
+    --accent-color: #FF8C00;    /* Dark orange */
+    --text-color: #FFFFFF;      /* White text */
+    --font-family: 'Poppins', sans-serif;
+}
+
+/* Header Styles */
 .header {
+    position: fixed;          /* Make the header fixed at the top */
+    top: 0;
+    left: 0;
+    width: 100%;              /* Ensure the header spans the full width */
+    height: 60px;             /* Set a fixed height for the header */
     display: flex;
     justify-content: space-between;
-    padding: 20px;
-    width: 96%;
-    background-image: linear-gradient(to right, #1a1a2e, #16146f);
-    /* Adjusted to match HomePage background */
-    font-family: 'Orbitron', sans-serif;
-    /* Consistent font family */
+    align-items: center;      /* Vertically center the content */
+    padding: 0 20px;          /* Adjust padding; removed top/bottom padding */
+    background-color: var(--primary-bg); /* Use your primary background color */
+    z-index: 1000;            /* Ensure the header stays above other elements */
+    font-family: var(--font-family);
 }
 
 .logo {
     font-size: 1.5em;
-    color: white;
+    color: var(--text-color);
     font-weight: bold;
-    font-family: 'Orbitron', sans-serif;
-    cursor: pointer;
-    /* Indicates that the logo is clickable */
+    cursor: pointer;          /* Indicates that the logo is clickable */
 }
 
 .navigation .nav-button {
     background: none;
-    border: 2px solid white;
-    color: white;
+    border: 2px solid var(--text-color);
+    color: var(--text-color);
     padding: 10px 20px;
     margin-left: 10px;
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s;
-    font-family: 'Orbitron', sans-serif;
-    /* Consistent font family */
-    border-radius: 25px;
-    /* Rounded borders similar to other buttons */
+    font-family: var(--font-family);
+    border-radius: 25px;       /* Rounded borders similar to other buttons */
 }
 
 .navigation .nav-button:hover {
-    background-color: white;
-    color: rgb(173, 167, 167);
-    /* Hover color adjusted to match the HomePage background */
-    box-shadow: 0 4px 6px rgba(34, 34, 173, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-    /* Similar hover effect as HomePage buttons */
+    background-color: var(--text-color);
+    color: var(--primary-bg);
+    box-shadow: 0 4px 6px rgba(34, 34, 173, 0.11),
+                0 1px 3px rgba(0, 0, 0, 0.08);
 }
