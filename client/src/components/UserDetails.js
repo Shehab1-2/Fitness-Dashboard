@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './UserDetails.css';
 import SideNav from './SideNav'; // Import the SideNav component
+import dummyUserData from './DummyData'; // Import the dummy data
 
 const UserDetails = () => {
     const [userData, setUserData] = useState(null);
@@ -21,16 +22,8 @@ const UserDetails = () => {
                 
                 // Check if the server response is OK
                 if (!response.ok) {
-                    // Use dummy data if the server request fails
-                    data = {
-                        "username": "admin",
-                        "gender": "Male",
-                        "height": 80,
-                        "fitnessGoals": "lose weight",
-                        "weights": [],
-                        "currentActivityLevel": "active",
-                        "dietaryPreferences": "vegan"
-                    };
+                    // Use the imported dummy data if the server request fails
+                    data = dummyUserData;
                 } else {
                     // Parse the response data if the request was successful
                     data = await response.json();
@@ -47,16 +40,8 @@ const UserDetails = () => {
             } catch (error) {
                 console.error('Error fetching user data:', error);
 
-                // Use dummy data in case of a network or fetch error
-                setUserData({
-                    "username": "admin",
-                    "gender": "Male",
-                    "height": 80,
-                    "fitnessGoals": "lose weight",
-                    "weights": [],
-                    "currentActivityLevel": "active",
-                    "dietaryPreferences": "vegan"
-                });
+                // Use the imported dummy data in case of a network or fetch error
+                setUserData(dummyUserData);
             }
         };
 

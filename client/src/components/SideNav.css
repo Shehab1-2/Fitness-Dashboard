@@ -1,24 +1,4 @@
-/* SideNav.css */
-.sidenav {
-    background-color: #1a1a2e;
-    color: #fff;
-    width: 250px;
-    padding: 20px;
-    box-sizing: border-box;
-    height: 100vh;
-}
-
-.sidebar-nav ul {
-    list-style: none;
-    padding: 0;
-}
-
-.sidebar-nav li {
-    padding: 10px;
-    margin-bottom: 10px;
-    cursor: pointer;
-}
-
-.sidebar-nav li:hover {
-    background-color: #33354a;
+.sidebar-nav{
+    background-color: #121212; /* White background */
+    color: #FF8C00; /* Black text */
 }

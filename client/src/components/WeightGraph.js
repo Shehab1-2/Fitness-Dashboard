@@ -3,6 +3,8 @@ import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
 import './WeightGraph.css'; // Ensure this is correctly importing the CSS
+import dummyUserData from './DummyData'; // Import the dummy data
+
 
 const WeightGraph = ({ username }) => {
     const [chartData, setChartData] = useState([]);
@@ -14,10 +16,18 @@ const WeightGraph = ({ username }) => {
             setLoading(true);
             try {
                 const response = await fetch(`http://localhost:5001/api/users/get-weights?username=${username}`);
-                const result = await response.json();
+                let result;
+
+                // Check if the API response is successful
                 if (!response.ok) {
-                    throw new Error(result.message || 'Network response was not ok');
+                    // Use dummy data if the response is not OK
+                    result = dummyUserData;
+                } else {
+                    // Use actual API response if successful
+                    result = await response.json();
                 }
+
+                // Map the data to the format needed for the chart
                 const data = result.weights.map(item => ({
                     date: new Date(item.date).toLocaleDateString(),
                     weight: item.weight

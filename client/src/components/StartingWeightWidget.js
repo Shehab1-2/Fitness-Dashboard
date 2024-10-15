@@ -1,5 +1,7 @@
 import React from 'react';
 import './StartingWeightWidget.css';
+import dummyUserData from './DummyData'; // Import the dummy data
+
 
 const StartingWeightWidget = ({ username }) => {
   // Dummy starting weight
