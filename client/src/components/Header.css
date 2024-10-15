@@ -26,7 +26,7 @@
 
 .logo {
     font-size: 1.5em;
-    color: var(--text-color);
+    color: #FF8C00;
     font-weight: bold;
     cursor: pointer;          /* Indicates that the logo is clickable */
 }
