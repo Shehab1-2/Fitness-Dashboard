@@ -3,7 +3,7 @@
     --primary-bg: #121212; /* Near-black background */
     --secondary-bg: #1E1E1E; /* Slightly lighter for cards */
     --accent-color: #FF8C00; /* Dark Orange */
-    --text-color: #ff4400; /* White text */
+    --text-color: #FFFFFF; /* White text */
     --muted-text-color: #B3B3B3; /* Muted gray text */
     --font-family: 'Poppins', sans-serif;
 }
@@ -32,9 +32,14 @@ body {
 
 .dashboard-grid {
     display: grid;
-    grid-template-columns: 220px 1fr;
+    grid-template-columns: 1fr; /* Default to one column if no sidebar */
     gap: 20px;
     padding: 20px;
+}
+
+/* If sidebar exists, adjust the layout */
+.has-sidebar .dashboard-grid {
+    grid-template-columns: 220px 1fr; /* Two columns layout when the sidebar is present */
 }
 
 .dashboard-content {
@@ -135,31 +140,6 @@ body {
     color: var(--muted-text-color);
 }
 
-/* Sidebar Styles */
-.sidebar-nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.sidebar-nav li {
-    padding: 12px 20px;
-    margin-bottom: 10px;
-    cursor: pointer;
-    border-radius: 8px;
-    color: var(--text-color);
-    transition: background-color 0.2s ease;
-}
-
-.sidebar-nav li:hover {
-    background-color: rgba(255, 140, 0, 0.2); /* Dark orange hover */
-}
-
-.sidebar-nav li.active {
-    background-color: var(--accent-color);
-    color: #FFFFFF;
-}
-
 /* Button Styles */
 button, input, select, textarea {
     font-family: inherit;
@@ -198,7 +178,7 @@ input::placeholder, textarea::placeholder {
 /* Responsive Design */
 @media (max-width: 1200px) {
     .dashboard-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr; /* Single column on smaller screens */
     }
 
     .dashboard-summary {

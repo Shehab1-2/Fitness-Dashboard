@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import './SideNav.css';
+
 
 const SideNav = () => {
   const username = localStorage.getItem('username');
@@ -32,7 +32,7 @@ const SideNav = () => {
   };
 
   return (
-    <aside className="sidenav">
+    
       <nav className="sidebar-nav">
         <ul>
           <li onClick={goToDashboard}>Welcome {username ? (username[0].toUpperCase() + username.substring(1)) : 'Guest'}</li>
@@ -43,7 +43,7 @@ const SideNav = () => {
           <li onClick={handleLogout}>Signout</li>
         </ul>
       </nav>
-    </aside>
+    
   );
 };
 
