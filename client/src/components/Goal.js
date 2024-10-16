@@ -52,24 +52,24 @@ const Goals = () => {
         let protein = 0, carbs = 0, fats = 0;
         switch (fitnessGoals) {
             case 'gain muscle':
-                protein = weight * 2.2;
-                carbs = weight * 4;
-                fats = weight * 1;
-                break;
-            case 'lose weight':
-                protein = weight * 1.8;
-                carbs = weight * 2;
+                protein = weight * 1.0;  // 1g protein per lb
+                carbs = weight * 3.5;    // Increase carbs for muscle gain
                 fats = weight * 0.8;
                 break;
+            case 'lose weight':
+                protein = weight * 1.2;  // Higher protein to maintain muscle during weight loss
+                carbs = weight * 1.5;    // Lower carbs for weight loss
+                fats = weight * 0.4;
+                break;
             case 'improve stamina':
-                protein = weight * 1.5;
-                carbs = weight * 3;
-                fats = weight * 0.9;
+                protein = weight * 1.0;
+                carbs = weight * 3.0;    // More carbs for endurance
+                fats = weight * 0.6;
                 break;
             default:
-                protein = weight * 1.5;
-                carbs = weight * 2;
-                fats = weight * 0.75;
+                protein = weight * 1.0;
+                carbs = weight * 2.0;
+                fats = weight * 0.5;
                 break;
         }
 
@@ -77,9 +77,10 @@ const Goals = () => {
     }
 
     const calculateCalories = (user) => {
-        const { mostRecentWeight: weight, currentActivityLevel } = user;
-        let bmr = weight * 24; // Basal metabolic rate calculation as a placeholder
+        const { mostRecentWeight: weight, currentActivityLevel, fitnessGoals } = user;
+        let bmr = weight * 12; // Placeholder: Adjusted down for weight loss
 
+        // Activity level adjustments
         switch (currentActivityLevel) {
             case 'sedentary':
                 bmr *= 1.2;
@@ -92,6 +93,19 @@ const Goals = () => {
                 break;
             default:
                 bmr *= 1.3;
+                break;
+        }
+
+        // Adjust for goals
+        switch (fitnessGoals) {
+            case 'gain muscle':
+                bmr += 300;  // Small caloric surplus
+                break;
+            case 'lose weight':
+                bmr -= 500;  // Caloric deficit for weight loss
+                break;
+            default:
+                // No change for maintenance or stamina improvement
                 break;
         }
 
@@ -127,8 +141,8 @@ const Goals = () => {
     return (
         <div className="widget macro-widget">
             <h2>Personal Goal</h2>
-            <p>Starting Weight: {userData.startingWeight} kg</p>
-            <p>Most Recent Weight: {userData.mostRecentWeight} kg</p>
+            <p>Starting Weight: {userData.startingWeight} LB</p>
+            <p>Most Recent Weight: {userData.mostRecentWeight} LB</p>
             <p>Total Calories: {calories} kcal/day</p>
             <p>Weight Change: {weightChange}</p>
         </div>
