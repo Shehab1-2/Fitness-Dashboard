@@ -56,7 +56,7 @@ const QuestionTab = () => {
     };
 
     return (
-        <div className="question-tab-dashboard">
+        
             <div className="dashboard-grid">
                 <SideNav />
                 
@@ -84,7 +84,7 @@ const QuestionTab = () => {
                     )}
                 </div>
             </div>
-        </div>
+        
     );
 };
 

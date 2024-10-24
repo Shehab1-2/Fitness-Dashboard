@@ -3,16 +3,16 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const userRoutes = require('./routes/userRoutes'); // Import user routes
+const userRoutes = require('./routes/userRoutes');
 const session = require('express-session');
-const OpenAI = require('openai'); // Correct import for the newer version
+const OpenAI = require('openai');
+const axios = require('axios');
 
 const app = express();
-//console.log('MongoDB URI:', process.env.URI);
 
-// Connect to MongoDB
-const mongoDB = 'mongodb+srv://admin:Shehab123@fit.lmpyceb.mongodb.net/myDatabase?retryWrites=true&w=majority';
-
+// Load environment variables
+const gpt = process.env.OPENAI_API_KEY; // Use the OpenAI API key from .env
+const mongoDB = process.env.MONGO_URI; // Use the MongoDB URI from .env
 
 mongoose.connect(mongoDB)
   .then(() => console.log('DB Connected!'))
@@ -21,59 +21,60 @@ mongoose.connect(mongoDB)
   });
 
 app.use(cors());
-app.use(express.json()); // Parse JSON bodies
+app.use(express.json());
 
-// Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'build')));
 
 app.use(session({
-  secret: 'hello', // Secret key for signing the session ID cookie
-  resave: false, // Don't save the session if unmodified
-  saveUninitialized: false, // Don't create a session until something is stored
-  cookie: { secure: false } // Set to true if using https
+  secret: process.env.SESSION_SECRET, // Use the session secret from .env
+  resave: false,
+  saveUninitialized: false,
+  cookie: { secure: false }
 }));
 
-// Use the userRoutes for any requests to /api/users
 app.use('/api/users', userRoutes);
 
-// API endpoint for testing
 app.get('/api/data', (req, res) => {
   res.json({ message: 'Hello from the API' });
 });
 
-// Configure OpenAI API
-
-/*const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+const openai = new OpenAI({
+  apiKey: gpt // Now using the key from the environment variable
 });
-*/
-// New API endpoint for ChatGPT
+
+console.log("OpenAI connected");
 
 app.post('/api/chatgpt', async (req, res) => {
   const { question } = req.body;
 
   try {
-    const response = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo',
-      messages: [{ role: 'user', content: question }],
-      max_tokens: 4096,
-    });
+    const response = await axios.post(
+      'https://api.openai.com/v1/chat/completions',
+      {
+        model: 'gpt-4o-mini',
+        messages: [{ role: 'user', content: question }],
+        temperature: 0.7,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${gpt}`,
+        },
+      }
+    );
 
-    res.json({ response: response.choices[0].message.content });
+    res.json({ response: response.data.choices[0].message.content });
   } catch (error) {
     console.error('Error fetching ChatGPT response:', error);
-
     if (error.response) {
       console.error('Error response status:', error.response.status);
       console.error('Error response data:', error.response.data);
       return res.status(error.response.status).json({ error: error.response.data });
     }
-
     res.status(500).json({ error: 'Failed to fetch response from ChatGPT' });
   }
 });
 
-// The catch-all handler for any requests that don't match API endpoints
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
@@ -83,12 +84,10 @@ app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
 
-// Handle unhandled promise rejections
 process.on('unhandledRejection', (err, promise) => {
   console.log(`Unhandled Rejection at: ${promise} - reason: ${err.message}`);
 });
 
-// Handle uncaught exceptions
 process.on('uncaughtException', (err) => {
   console.log(`Uncaught Exception: ${err.message}`);
   process.exit(1);

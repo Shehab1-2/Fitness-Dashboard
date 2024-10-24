@@ -1,26 +1,31 @@
-body,
-html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    background-color: #1a1a2e;
-    font-family: 'Orbitron', sans-serif;
-    color: #fff;
+/* Root Variables */
+:root {
+    --primary-bg: #121212; /* Near-black background */
+    --secondary-bg: #1E1E1E; /* Slightly lighter for cards */
+    --accent-color: #FF8C00; /* Dark Orange */
+    --text-color: #FFFFFF; /* White text */
+    --muted-text-color: #B3B3B3; /* Muted gray text */
+    --font-family: 'Poppins', sans-serif;
 }
 
+/* General Layout */
 .weekly-workout-dashboard {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    background-color: var(--primary-bg);
+    font-family: var(--font-family);
+    color: var(--text-color);
 }
 
 .dashboard-grid {
     display: grid;
-    grid-template-columns: 250px 1fr;
+    grid-template-columns: 250px 1fr; /* Sidebar with main content */
     gap: 20px;
     padding: 20px;
 }
 
+/* Weekly Workout Content */
 .weekly-workout-content {
     display: flex;
     flex-direction: column;
@@ -29,15 +34,17 @@ html {
     margin: 0 auto;
     padding: 20px;
     border-radius: 10px;
-    background-color: #33354a;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: var(--secondary-bg);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
 .weekly-workout-content h2 {
     text-align: center;
     margin-bottom: 20px;
+    color: var(--text-color);
 }
 
+/* Form Group Styles */
 .form-group {
     margin-bottom: 15px;
 }
@@ -45,27 +52,34 @@ html {
 .form-group label {
     display: block;
     margin-bottom: 5px;
+    color: var(--text-color);
 }
 
 .form-group select,
 .form-group input {
     width: 100%;
     padding: 10px;
-    border-radius: 5px;
-    border: none;
-    background-color: #444;
-    color: #fff;
+    border-radius: 8px;
+    border: 1px solid #444444;
+    background-color: var(--secondary-bg);
+    color: var(--text-color);
 }
 
+.form-group select::placeholder,
+.form-group input::placeholder {
+    color: var(--muted-text-color);
+}
+
+/* Button Styles */
 .button {
     width: 100%;
     padding: 10px;
     border: none;
-    border-radius: 5px;
-    background-color: #0d0d1a;
-    color: #fff;
+    border-radius: 12px;
+    background-color: var(--accent-color);
+    color: var(--text-color);
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.2s ease;
 }
 
 .button:disabled {
@@ -73,43 +87,45 @@ html {
 }
 
 .button:hover:enabled {
-    background-color: #33354a;
+    background-color: #e07c00; /* Slightly darker on hover */
 }
 
+/* Error Styles */
 .error {
     margin-top: 20px;
     background-color: #ff4c4c;
     padding: 10px;
     border-radius: 5px;
-    color: #fff;
+    color: var(--text-color);
 }
 
+/* Workout Plan Display */
 .workout-plan {
     margin-top: 20px;
-    background-color: #444;
+    background-color: var(--secondary-bg);
     padding: 20px;
-    border-radius: 5px;
+    border-radius: 8px;
     max-height: 400px;
-    /* Adjust based on your layout needs */
     overflow-y: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
 .workout-plan h3 {
-    margin: 0 0 10px;
+    margin-bottom: 10px;
+    color: var(--text-color);
 }
 
 .workout-plan pre {
     margin: 0;
     white-space: pre-wrap;
-    /* Ensures long text wraps to the next line */
     word-wrap: break-word;
-    /* Breaks long words to fit within the container */
+    color: var(--muted-text-color);
 }
 
-/* SideNav Styles */
+/* Sidebar Styles */
 .sidenav {
-    background-color: #1a1a2e;
-    color: #fff;
+    background-color: var(--primary-bg);
+    color: var(--text-color);
     width: 250px;
     padding: 20px;
     box-sizing: border-box;
@@ -128,5 +144,16 @@ html {
 }
 
 .sidebar-nav li:hover {
-    background-color: #33354a;
+    background-color: var(--secondary-bg);
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr; /* Single column on smaller screens */
+    }
+
+    .weekly-workout-content {
+        width: 100%;
+    }
 }
