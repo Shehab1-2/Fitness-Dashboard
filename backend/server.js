@@ -15,7 +15,7 @@ const gpt = process.env.OPENAI_API_KEY; // Use the OpenAI API key from .env
 const mongoDB = process.env.MONGO_URI; // Use the MongoDB URI from .env
 
 mongoose.connect(mongoDB)
-  .then(() => console.log('DB Connected!'))
+  .then(() => console.log('DB Connectedd!'))
   .catch(err => {
     console.log(`DB Connection Error: ${err.message}`);
   });
