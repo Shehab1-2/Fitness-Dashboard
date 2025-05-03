@@ -10,37 +10,44 @@ const adminCredentials = {
   };
 // POST /signup route for registering a new user
 router.post('/signup', async (req, res) => {
-  try {
-    // Check if user already exists
-    const existingUser = await User.findOne({ username: req.body.username });
-    if (existingUser) {
-      return res.status(409).json({ message: 'User already exists' });
+    try {
+      const existingUser = await User.findOne({ username: req.body.username });
+      if (existingUser) {
+        return res.status(409).json({ message: 'User already exists' });
+      }
+  
+      const {
+        username,
+        password,
+        gender,
+        height,
+        weight,
+        fitnessGoals,
+        currentActivityLevel,
+        dietaryPreferences
+      } = req.body;
+  
+      // 👇 Use raw password; Mongoose will hash it
+      const user = new User({
+        username,
+        password,
+        gender,
+        height,
+        weight,
+        fitnessGoals,
+        currentActivityLevel,
+        dietaryPreferences
+      });
+  
+      await user.save();
+  
+      res.status(201).json({ message: 'User created successfully' });
+    } catch (error) {
+      console.error('Error during signup:', error);
+      res.status(500).json({ message: 'Error creating the user', error });
     }
-
-    // Hash the password
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    const { username, gender, height, weight, fitnessGoals, currentActivityLevel, dietaryPreferences } = req.body;
-
-    // Create a new user
-    const user = new User({
-      username: req.body.username,
-      password: hashedPassword,
-      gender,
-      height,
-      weight,
-      fitnessGoals,
-      currentActivityLevel,
-      dietaryPreferences
-    });
-
-    // Save the user in the database
-    await user.save();
-
-    res.status(201).json({ message: 'User created successfully' });
-  } catch (error) {
-    res.status(500).json({ message: 'Error creating the user', error: error });
-  }
-});
+  });
+  
 
 // POST /login route
 router.post('/login', async (req, res) => {

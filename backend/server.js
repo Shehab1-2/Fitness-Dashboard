@@ -3,53 +3,63 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const userRoutes = require('./routes/userRoutes');
 const session = require('express-session');
+const userRoutes = require('./routes/userRoutes');
 const OpenAI = require('openai');
 
 const app = express();
-console.log('MongoDB URI:', process.env.URI);
 
 // Connect to MongoDB
-const mongoDB = 'mongodb+srv://admin:sheHAB0730%40@fit.lmpyceb.mongodb.net/myDatabase?retryWrites=true&w=majority';
-// Use the URI from .env
-mongoose.connect(mongoDB)
-  .then(() => console.log('DB Connected!'))
-  .catch(err => {
-    console.log(`DB Connection Error: ${err.message}`);
-  });
+const mongoDB = process.env.MONGO_URI;
+mongoose.connect(process.env.MONGO_URI, {
+  ssl: true,
+  tlsAllowInvalidCertificates: false, // Optional, use true only for dev
+})
 
+  .then(() => console.log('✅ MongoDB connected'))
+  .catch(err => console.error(`❌ MongoDB connection error: ${err.message}`));
 
+// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Serve static files from the React app
+// Serve static frontend (React build)
 app.use(express.static(path.join(__dirname, 'build')));
 
+// Session management (should store in DB or Redis in prod)
 app.use(session({
-  secret: 'hello', // Secret key for signing the session ID cookie
-  resave: false, // Don't save the session if unmodified
-  saveUninitialized: false, // Don't create a session until something is stored
-  cookie: { secure: false } // Set to true if using https
+  secret: process.env.SESSION_SECRET || 'default_secret',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { secure: process.env.NODE_ENV === 'production' },
 }));
 
-// Use the userRoutes for any requests to /api/users
+// API Routes
 app.use('/api/users', userRoutes);
 
-// API endpoint for testing
 app.get('/api/data', (req, res) => {
   res.json({ message: 'Hello from the API' });
 });
 
-// Configure OpenAI API
+// OpenAI Setup
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY, // Use OpenAI key from .env
+  apiKey: process.env.OPENAI_API_KEY,
 });
 
-// New API endpoint for ChatGPT
+let openAIAvailable = false;
+
+(async () => {
+  try {
+    await openai.models.list();
+    console.log('✅ OpenAI connected');
+    openAIAvailable = true;
+  } catch (err) {
+    console.warn('⚠️ OpenAI not available:', err.message);
+  }
+})();
+
 app.post('/api/chatgpt', async (req, res) => {
   const { question } = req.body;
-
   try {
     const response = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
@@ -59,35 +69,31 @@ app.post('/api/chatgpt', async (req, res) => {
 
     res.json({ response: response.choices[0].message.content });
   } catch (error) {
-    console.error('Error fetching ChatGPT response:', error);
-
+    console.error('❌ ChatGPT error:', error.message);
     if (error.response) {
-      console.error('Error response status:', error.response.status);
-      console.error('Error response data:', error.response.data);
       return res.status(error.response.status).json({ error: error.response.data });
     }
-
-    res.status(500).json({ error: 'Failed to fetch response from ChatGPT' });
+    res.status(500).json({ error: 'ChatGPT request failed' });
   }
 });
 
-// The catch-all handler for any requests that don't match API endpoints
+// Catch-all for React routing
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
+// Server listening
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
+  console.log(`🚀 Server listening on port ${PORT}`);
 });
 
-// Handle unhandled promise rejections
-process.on('unhandledRejection', (err, promise) => {
-  console.log(`Unhandled Rejection at: ${promise} - reason: ${err.message}`);
+// Global error handling
+process.on('unhandledRejection', (err) => {
+  console.error('❌ Unhandled Rejection:', err.message);
 });
 
-// Handle uncaught exceptions
 process.on('uncaughtException', (err) => {
-  console.log(`Uncaught Exception: ${err.message}`);
+  console.error('❌ Uncaught Exception:', err.message);
   process.exit(1);
 });

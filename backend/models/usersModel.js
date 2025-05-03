@@ -56,10 +56,11 @@ const userSchema = new mongoose.Schema({
     default: '',
   },
 // Generated Plan
-  workoutPlan: {
-    type: String,
-    default: '' // Default to an empty string or null
-  },
+workoutPlan: {
+  type: Object,
+  default: {}
+}
+,
   dietPlan: {
     type: String,
     default: '' // Default to an empty string or null
