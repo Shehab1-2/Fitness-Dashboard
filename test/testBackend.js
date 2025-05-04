@@ -1,5 +1,6 @@
 const axios = require('axios');
-const BASE_URL = 'http://localhost:5001/api/users';
+const BASE_API = 'http://144.202.11.158:5001';
+const BASE_URL = `${BASE_API}/api/users`;
 
 const USE_UNIQUE_USER = true; // Set to true if you want to test with a fresh user every time
 
@@ -86,7 +87,7 @@ const runTests = async () => {
     console.log('✅ Profile fetched:', profile.data);
 
     console.log('\n[10] ChatGPT Prompt');
-    const gpt = await axios.post('http://localhost:5001/api/chatgpt', {
+    const gpt = await axios.post(`${BASE_API}/api/chatgpt`, {
       question: 'Give me a macro-friendly meal plan for cutting.',
     });
     console.log('✅ GPT response:', gpt.data.response);

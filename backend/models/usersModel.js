@@ -59,8 +59,7 @@ const userSchema = new mongoose.Schema({
 workoutPlan: {
   type: Object,
   default: {}
-}
-,
+},
   dietPlan: {
     type: String,
     default: '' // Default to an empty string or null

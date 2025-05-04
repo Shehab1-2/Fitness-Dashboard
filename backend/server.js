@@ -26,7 +26,7 @@ app.use(express.json());
 // Serve static frontend (React build)
 app.use(express.static(path.join(__dirname, 'build')));
 
-// Session management (should store in DB or Redis in prod)
+// Session management
 app.use(session({
   secret: process.env.SESSION_SECRET || 'default_secret',
   resave: false,

@@ -1,0 +1,48 @@
+name: Deploy Backend to Vultr
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "backend/**"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.VULTR_SSH_KEY }}
+
+      - name: Deploy to Vultr
+        run: |
+          ssh -o StrictHostKeyChecking=no root@144.202.11.158 << 'EOF'
+            cd ~/backend
+            git pull origin main
+            docker stop fitness-backend || true
+            docker rm fitness-backend || true
+            docker build -t fitness-dashboard-backend:latest .
+            docker run -d --env-file .env -p 5001:5001 --name fitness-backend fitness-dashboard-backend:latest
+          EOF
+
+      - name: Notify Discord of success
+        if: success()
+        run: |
+          curl -H "Content-Type: application/json" \
+               -X POST \
+               -d '{"username": "Fitness Bot", "content": "✅ Backend successfully deployed to Vultr 🚀"}' \
+               ${{ secrets.DISCORD_WEBHOOK_URL }}
+
+      - name: Notify Discord of failure
+        if: failure()
+        run: |
+          curl -H "Content-Type: application/json" \
+               -X POST \
+               -d '{"username": "Fitness Bot", "content": "❌ Deployment failed. Check GitHub Actions logs."}' \
+               ${{ secrets.DISCORD_WEBHOOK_URL }}
