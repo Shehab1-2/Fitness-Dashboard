@@ -16,7 +16,7 @@ mongoose.connect(process.env.MONGO_URI, {
   tlsAllowInvalidCertificates: false, // Optional, use true only for dev
 })
 
-  .then(() => console.log('✅ MongoDB connected'))
+  .then(() => console.log('✅ MongoDB connected!'))
   .catch(err => console.error(`❌ MongoDB connection error: ${err.message}`));
 
 // Middleware
