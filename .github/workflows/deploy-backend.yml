@@ -22,14 +22,13 @@ jobs:
 
       - name: Deploy to Vultr
         run: |
-          ssh -o StrictHostKeyChecking=no -p 22507 root@144.202.11.158 << 'EOF'
-            cd ~/backend
-            git pull origin main
-            docker stop fitness-backend || true
-            docker rm fitness-backend || true
-            docker build -t fitness-dashboard-backend:latest .
-            docker run -d --env-file .env -p 5001:5001 --name fitness-backend fitness-dashboard-backend:latest
-          EOF
+          ssh -o StrictHostKeyChecking=no -p 22507 root@144.202.11.158 "\
+            cd ~/backend && \
+            git pull origin main && \
+            docker stop fitness-backend || true && \
+            docker rm fitness-backend || true && \
+            docker build -t fitness-dashboard-backend:latest . && \
+            docker run -d --env-file .env -p 5001:5001 --name fitness-backend fitness-dashboard-backend:latest"
 
       - name: Notify Discord of success
         if: success()
