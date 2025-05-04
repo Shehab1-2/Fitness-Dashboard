@@ -25,7 +25,8 @@ jobs:
           ssh -o StrictHostKeyChecking=no -p 22507 root@144.202.11.158 "\
             cd ~/backend && \
             git pull origin main || echo '⚠️ Not a Git repo, skipping pull' && \
-            docker rm -f fitness-backend || true && \
+            docker stop fitness-backend || true && \
+            docker rm fitness-backend || true && \
             docker build -t fitness-dashboard-backend:latest . && \
             docker run -d --env-file .env -p 5001:5001 --name fitness-backend fitness-dashboard-backend:latest"
 
