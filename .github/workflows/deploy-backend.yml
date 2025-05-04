@@ -22,7 +22,7 @@ jobs:
 
       - name: Deploy to Vultr
         run: |
-          ssh -o StrictHostKeyChecking=no root@144.202.11.158 << 'EOF'
+          ssh -o StrictHostKeyChecking=no -p ${{ secrets.VULTR_SSH_PORT }} root@144.202.11.158 << 'EOF'
             cd ~/backend
             git pull origin main
             docker stop fitness-backend || true
