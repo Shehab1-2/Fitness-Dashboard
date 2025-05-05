@@ -22,12 +22,15 @@ jobs:
 
       - name: Deploy to Vultr
         run: |
-          ssh -o StrictHostKeyChecking=no -p ${{ secrets.VULTR_SSH_PORT }} root@${{ secrets.VULTR_SERVER_IP }} << 'EOF'
+          ssh -o StrictHostKeyChecking=no -p ${{ secrets.VULTR_SSH_PORT }} root@${{ secrets.VULTR_IP }} << 'EOF'
             cd ~/backend
             git pull origin main
+
             docker stop fitness-backend || true
             docker rm fitness-backend || true
+
             docker build -t fitness-dashboard-backend:latest ./backend
+
             docker run -d --env-file ./backend/.env -p 5001:5001 --name fitness-backend fitness-dashboard-backend:latest
           EOF
 
