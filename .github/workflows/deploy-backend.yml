@@ -29,9 +29,9 @@ jobs:
             docker stop fitness-backend || true
             docker rm fitness-backend || true
 
-            docker build -t fitness-dashboard-backend:latest ./backend
+            docker build -f backend/Dockerfile -t fitness-dashboard-backend:latest backend/
 
-            docker run -d --env-file ./backend/.env -p 5001:5001 --name fitness-backend fitness-dashboard-backend:latest
+            docker run -d --env-file backend/.env -p 5001:5001 --name fitness-backend fitness-dashboard-backend:latest
           EOF
 
       - name: Notify Discord of success
