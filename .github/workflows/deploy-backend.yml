@@ -15,7 +15,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup SSH
+      - name: Setup SSH Agent
         uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.VULTR_SSH_KEY }}
@@ -24,14 +24,12 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no -p ${{ secrets.VULTR_SSH_PORT }} root@${{ secrets.VULTR_IP }} << 'EOF'
             cd ~/backend
-            git pull origin main
-
+            git pull origin main || echo '⚠️ Not a Git repo, skipping pull'
+            cd backend
             docker stop fitness-backend || true
             docker rm fitness-backend || true
-
-            docker build -f backend/Dockerfile -t fitness-dashboard-backend:latest backend/
-
-            docker run -d --env-file backend/.env -p 5001:5001 --name fitness-backend fitness-dashboard-backend:latest
+            docker build -t fitness-dashboard-backend:latest .
+            docker run -d --env-file .env -p 5001:5001 --name fitness-backend fitness-dashboard-backend:latest
           EOF
 
       - name: Notify Discord of success
