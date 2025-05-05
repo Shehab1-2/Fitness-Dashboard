@@ -27,7 +27,7 @@ jobs:
             [ ! -d backend ] && git clone https://github.com/Shehab1-2/Fitness-Dashboard backend
             cd backend
             git pull origin main || echo '⚠️ Not a Git repo, skipping pull'
-            cd backend
+            cd backend/backend
             docker stop fitness-backend || true
             docker rm fitness-backend || true
             docker build -t fitness-dashboard-backend:latest .
