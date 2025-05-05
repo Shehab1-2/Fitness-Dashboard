@@ -20,29 +20,29 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.VULTR_SSH_KEY }}
 
-      - name: Deploy via SSH
+      - name: Deploy to Vultr
         run: |
-          ssh -o StrictHostKeyChecking=no -p 22507 root@144.202.11.158 << 'EOF'
-            cd ~/backend/backend
+          ssh -o StrictHostKeyChecking=no -p ${{ secrets.VULTR_SSH_PORT }} root@${{ secrets.VULTR_SERVER_IP }} << 'EOF'
+            cd ~/backend
             git pull origin main
             docker stop fitness-backend || true
             docker rm fitness-backend || true
-            docker build -t fitness-dashboard-backend:latest .
-            docker run -d --env-file .env -p 5001:5001 --name fitness-backend fitness-dashboard-backend:latest
+            docker build -t fitness-dashboard-backend:latest ./backend
+            docker run -d --env-file ./backend/.env -p 5001:5001 --name fitness-backend fitness-dashboard-backend:latest
           EOF
 
-      - name: Notify Discord (success)
+      - name: Notify Discord of success
         if: success()
         run: |
           curl -H "Content-Type: application/json" \
                -X POST \
-               -d '{"username": "Fitness Bot", "content": "✅ Backend successfully deployed to Vultr!"}' \
+               -d '{"username": "Fitness Bot", "content": "✅ Backend successfully deployed to Vultr 🚀"}' \
                ${{ secrets.DISCORD_WEBHOOK_URL }}
 
-      - name: Notify Discord (failure)
+      - name: Notify Discord of failure
         if: failure()
         run: |
           curl -H "Content-Type: application/json" \
                -X POST \
-               -d '{"username": "Fitness Bot", "content": "❌ Deployment failed. Check logs."}' \
+               -d '{"username": "Fitness Bot", "content": "❌ Deployment failed. Check GitHub Actions logs."}' \
                ${{ secrets.DISCORD_WEBHOOK_URL }}
