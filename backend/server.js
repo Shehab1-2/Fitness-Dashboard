@@ -6,8 +6,28 @@ const cors = require('cors');
 const session = require('express-session');
 const userRoutes = require('./routes/userRoutes');
 const OpenAI = require('openai');
+const swaggerUi = require('swagger-ui-express');
+const swaggerJsdoc = require('swagger-jsdoc');
 
 const app = express();
+
+// Swagger configuration
+const swaggerOptions = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'My API',
+      version: '1.0.0',
+      description: 'A sample Express API with Swagger docs',
+    },
+  },
+  apis: ['./routes/*.js'], // Path to your route files
+};
+
+const swaggerSpec = swaggerJsdoc(swaggerOptions);
+
+// Serve Swagger docs
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Connect to MongoDB
 const mongoDB = process.env.MONGO_URI;

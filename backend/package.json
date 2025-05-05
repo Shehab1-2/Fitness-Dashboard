@@ -17,6 +17,8 @@
     "express": "^4.19.2",
     "express-session": "^1.18.0",
     "mongoose": "^8.2.4",
-    "openai": "^4.47.3"
+    "openai": "^4.47.3",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   }
 }
