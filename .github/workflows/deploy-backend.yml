@@ -1,62 +1,53 @@
 name: Deploy Backend to Vultr
-
 on:
   push:
     branches:
       - main
     paths:
       - "backend/**"
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
       - name: Setup SSH Agent
         uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.VULTR_SSH_KEY }}
-
       - name: Deploy to Vultr
         run: |
-          ssh -o StrictHostKeyChecking=no -p ${{ secrets.VULTR_SSH_PORT }} root@${{ secrets.VULTR_IP }} << EOF
-            echo "🚀 STEP 1: Starting deploy..."
-
-            echo "📁 Changing to backend repo..."
-            cd ~/backend || exit 1
-            git pull origin main || echo '⚠️ Not a Git repo, skipping pull'
-
-            echo "📁 Moving into Dockerfile directory..."
-            cd backend || exit 1
-            echo "📍 Current directory: \$(pwd)"
-            echo "📂 Listing files:"
+          ssh -o StrictHostKeyChecking=no -p ${{ secrets.VULTR_SSH_PORT }} root@144.202.11.158 << EOF
+            echo "📂 STEP 1: Navigate to backend directory"
+            cd ~/backend/backend
+            echo "📁 Current dir: $(pwd)"
+            echo "📃 Files:"
             ls -la
-
-            echo "🛑 STEP 2: Cleaning up existing container..."
+            
+            echo "📂 STEP 2: Pull latest changes"
+            cd ~/backend
+            git pull origin main || echo '⚠️ Not a Git repo, skipping pull'
+            
+            echo "📂 STEP 3: Navigate to Dockerfile directory"
+            cd ~/backend/backend
+            echo "📁 Current dir: $(pwd)"
+            echo "📃 Files:"
+            ls -la
+            
+            echo "🧼 STEP 4: Clean up old container"
             docker stop fitness-backend || true
             docker rm fitness-backend || true
-
-            echo "🐳 STEP 3: Building Docker image..."
+            
+            echo "🐳 STEP 5: Build Docker image"
             docker build -t fitness-dashboard-backend:latest .
-
-            echo "🚀 STEP 4: Running Docker container..."
+            
+            echo "🚀 STEP 6: Run container"
             docker run -d --env-file .env -p 5001:5001 --name fitness-backend fitness-dashboard-backend:latest
-
-            echo "🩺 STEP 5: Performing health check..."
+            
+            echo "🩺 STEP 7: Health check"
             sleep 5
-            if curl --fail http://localhost:5001/api/hello; then
-              echo "✅ Health check passed!"
-            else
-              echo "❌ Health check failed!"
-              echo "📄 Dumping container logs:"
-              docker logs fitness-backend
-              exit 1
-            fi
+            curl --fail http://localhost:5001/api/hello || (echo '❌ Health check failed!' && exit 1)
           EOF
-
       - name: Notify Discord of success
         if: success()
         run: |
@@ -64,7 +55,6 @@ jobs:
                -X POST \
                -d '{"username": "Fitness Bot", "content": "✅ Backend successfully deployed to Vultr 🚀"}' \
                ${{ secrets.DISCORD_WEBHOOK_URL }}
-
       - name: Notify Discord of failure
         if: failure()
         run: |
