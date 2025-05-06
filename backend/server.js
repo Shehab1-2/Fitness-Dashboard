@@ -117,3 +117,7 @@ process.on('uncaughtException', (err) => {
   console.error('❌ Uncaught Exception:', err.message);
   process.exit(1);
 });
+
+app.get('/health', (req, res) => {
+  res.send('OK');
+})
