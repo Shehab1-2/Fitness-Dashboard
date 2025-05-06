@@ -22,16 +22,26 @@ jobs:
 
       - name: Deploy to Vultr
         run: |
-          ssh -o StrictHostKeyChecking=no -p ${{ secrets.VULTR_SSH_PORT }} root@${{ secrets.VULTR_IP }} << EOF
+          ssh -o StrictHostKeyChecking=no -p ${{ secrets.VULTR_SSH_PORT }} root@${{ secrets.VULTR_IP }} << 'EOF'
+            echo "📂 Starting deploy on Vultr..."
+
             cd ~
             [ ! -d backend ] && git clone https://github.com/Shehab1-2/Fitness-Dashboard backend
             cd backend
             git pull origin main || echo '⚠️ Not a Git repo, skipping pull'
             cd backend
-            docker rm -f fitness-backend || true
+
+            echo "📁 Inside: $(pwd)"
+            echo "📃 Files:"
+            ls -la
+
+            docker stop fitness-backend || true
+            docker rm fitness-backend || true
             docker build -t fitness-dashboard-backend:latest .
             docker run -d --env-file .env -p 5001:5001 --name fitness-backend fitness-dashboard-backend:latest
-            sleep 5 && curl --fail http://localhost:5001/api/hello || (echo "❌ Health check failed" && exit 1)
+
+            echo "🩺 Running health check..."
+            sleep 5 && curl --fail http://localhost:5001/api/hello || (echo '❌ Health check failed!' && exit 1)
           EOF
 
       - name: Notify Discord of success
