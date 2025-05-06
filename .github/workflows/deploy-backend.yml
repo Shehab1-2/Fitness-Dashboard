@@ -42,7 +42,6 @@ jobs:
 
             echo "🩺 Running health check..."
             sleep 5 && curl --fail http://localhost:5001/api/hello || (echo '❌ Health check failed!' && exit 1)
-          EOF
 
       - name: Notify Discord of success
         if: success()
@@ -59,3 +58,4 @@ jobs:
                -X POST \
                -d '{"username": "Fitness Bot", "content": "❌ Deployment failed. Check GitHub Actions logs."}' \
                ${{ secrets.DISCORD_WEBHOOK_URL }}
+            EOF
