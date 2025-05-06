@@ -17,7 +17,7 @@ jobs:
           ssh-private-key: ${{ secrets.VULTR_SSH_KEY }}
       - name: Deploy to Vultr
         run: |
-          ssh -o StrictHostKeyChecking=no -p ${{ secrets.VULTR_SSH_PORT }} root@144.202.11.158 << EOF
+          ssh -o StrictHostKeyChecking=no -p ${{ secrets.VULTR_SSH_PORT }} root@${{ secrets.VULTR_IP }} << EOF
             echo "📂 STEP 1: Navigate to backend directory"
             cd ~/backend/backend
             echo "📁 Current dir: $(pwd)"
