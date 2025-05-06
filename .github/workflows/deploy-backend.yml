@@ -23,40 +23,35 @@ jobs:
       - name: Deploy to Vultr
         run: |
           ssh -o StrictHostKeyChecking=no -p ${{ secrets.VULTR_SSH_PORT }} root@${{ secrets.VULTR_IP }} << EOF
-            echo "📂 STEP 1: Clone or enter backend repo"
-            cd ~
-            [ ! -d backend ] && git clone https://github.com/Shehab1-2/Fitness-Dashboard backend
-            cd backend
-            echo "📁 Current dir: \$(pwd)"
-            echo "📃 Files:"
-            ls -la
+            echo "🚀 STEP 1: Starting deploy..."
 
-            echo "📂 STEP 2: Pull latest changes"
+            echo "📁 Changing to backend repo..."
+            cd ~/backend || exit 1
             git pull origin main || echo '⚠️ Not a Git repo, skipping pull'
 
-            echo "📂 STEP 3: Navigate to Dockerfile directory"
-            cd backend
-            echo "📁 Current dir: \$(pwd)"
-            echo "📃 Files:"
+            echo "📁 Moving into Dockerfile directory..."
+            cd backend || exit 1
+            echo "📍 Current directory: \$(pwd)"
+            echo "📂 Listing files:"
             ls -la
 
-            echo "🧼 STEP 4: Clean up old container"
+            echo "🛑 STEP 2: Cleaning up existing container..."
             docker stop fitness-backend || true
             docker rm fitness-backend || true
 
-            echo "🐳 STEP 5: Build Docker image"
-            docker build -t fitness-dashboard-backend:latest ./backend
+            echo "🐳 STEP 3: Building Docker image..."
+            docker build -t fitness-dashboard-backend:latest .
 
-            echo "🚀 STEP 6: Run container"
+            echo "🚀 STEP 4: Running Docker container..."
             docker run -d --env-file .env -p 5001:5001 --name fitness-backend fitness-dashboard-backend:latest
 
-            echo "🩺 STEP 7: Health check"
+            echo "🩺 STEP 5: Performing health check..."
             sleep 5
             if curl --fail http://localhost:5001/api/hello; then
               echo "✅ Health check passed!"
             else
-              echo '❌ Health check failed!'
-              echo '📄 Dumping container logs:'
+              echo "❌ Health check failed!"
+              echo "📄 Dumping container logs:"
               docker logs fitness-backend
               exit 1
             fi
