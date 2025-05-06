@@ -57,6 +57,10 @@ app.use(session({
 // API Routes
 app.use('/api/users', userRoutes);
 
+app.get('/health', (req, res) => {
+  res.send('OK');
+});
+
 app.get('/api/data', (req, res) => {
   res.json({ message: 'Hello from the API' });
 });
@@ -118,6 +122,4 @@ process.on('uncaughtException', (err) => {
   process.exit(1);
 });
 
-app.get('/health', (req, res) => {
-  res.send('OK');
-})
+
