@@ -75,7 +75,7 @@ let openAIAvailable = false;
 (async () => {
   try {
     await openai.models.list();
-    console.log('✅ OpenAI connected HIP HIP YAYAYAYAAYAY!');
+    console.log('✅ OpenAI connected HIPy YAYAYAYAAYAY!');
     openAIAvailable = true;
   } catch (err) {
     console.warn('⚠️ OpenAI not available:', err.message);
