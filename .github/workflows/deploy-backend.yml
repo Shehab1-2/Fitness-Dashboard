@@ -22,26 +22,38 @@ jobs:
 
       - name: Deploy to Vultr
         run: |
-          ssh -o StrictHostKeyChecking=no -p ${{ secrets.VULTR_SSH_PORT }} root@${{ secrets.VULTR_IP }} << 'EOF'
-            echo "📂 Starting deploy on Vultr..."
-
+          ssh -o StrictHostKeyChecking=no -p ${{ secrets.VULTR_SSH_PORT }} root@${{ secrets.VULTR_IP }} << EOF
+            echo "📂 STEP 1: Clone or enter backend repo"
             cd ~
             [ ! -d backend ] && git clone https://github.com/Shehab1-2/Fitness-Dashboard backend
             cd backend
-            git pull origin main || echo '⚠️ Not a Git repo, skipping pull'
-            cd backend
-
-            echo "📁 Inside: $(pwd)"
+            echo "📁 Current dir: $(pwd)"
             echo "📃 Files:"
             ls -la
 
+            echo "📂 STEP 2: Pull latest changes"
+            git pull origin main || echo '⚠️ Not a Git repo, skipping pull'
+
+            echo "📂 STEP 3: Navigate to Dockerfile directory"
+            cd backend
+            echo "📁 Current dir: $(pwd)"
+            echo "📃 Files:"
+            ls -la
+
+            echo "🧼 STEP 4: Clean up old container"
             docker stop fitness-backend || true
             docker rm fitness-backend || true
+
+            echo "🐳 STEP 5: Build Docker image"
             docker build -t fitness-dashboard-backend:latest .
+
+            echo "🚀 STEP 6: Run container"
             docker run -d --env-file .env -p 5001:5001 --name fitness-backend fitness-dashboard-backend:latest
 
-            echo "🩺 Running health check..."
-            sleep 5 && curl --fail http://localhost:5001/api/hello || (echo '❌ Health check failed!' && exit 1)
+            echo "🩺 STEP 7: Health check"
+            sleep 5
+            curl --fail http://localhost:5001/api/hello || (echo '❌ Health check failed!' && exit 1)
+          EOF
 
       - name: Notify Discord of success
         if: success()
@@ -58,4 +70,3 @@ jobs:
                -X POST \
                -d '{"username": "Fitness Bot", "content": "❌ Deployment failed. Check GitHub Actions logs."}' \
                ${{ secrets.DISCORD_WEBHOOK_URL }}
-            EOF
