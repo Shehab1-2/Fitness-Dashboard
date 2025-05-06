@@ -45,7 +45,7 @@ jobs:
             docker rm fitness-backend || true
 
             echo "🐳 STEP 5: Build Docker image"
-            docker build -t fitness-dashboard-backend:latest .
+            docker build -t fitness-dashboard-backend:latest ./backend
 
             echo "🚀 STEP 6: Run container"
             docker run -d --env-file .env -p 5001:5001 --name fitness-backend fitness-dashboard-backend:latest
