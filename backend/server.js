@@ -55,13 +55,13 @@ app.use(session({
 }));
 
 // API Routes
-app.use('/api/users', userRoutes);
+app.use('/users', userRoutes);
 
 app.get('/health', (req, res) => {
   res.send('OK');
 });
 
-app.get('/api/data', (req, res) => {
+app.get('/data', (req, res) => {
   res.json({ message: 'Hello from the API' });
 });
 
@@ -82,7 +82,7 @@ let openAIAvailable = false;
   }
 })();
 
-app.post('/api/chatgpt', async (req, res) => {
+app.post('/chatgpt', async (req, res) => {
   const { question } = req.body;
   try {
     const response = await openai.chat.completions.create({
