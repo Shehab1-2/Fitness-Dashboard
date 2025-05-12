@@ -16,7 +16,7 @@ const UserDetails = () => {
             }
 
             try {
-                const response = await fetch(`http://localhost:5001/api/users/user/${username}`);
+                const response = await fetch(`http://localhost:5001/users/${username}`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch user details');
                 }
@@ -41,7 +41,7 @@ const UserDetails = () => {
     return (
         <div className="user-details-dashboard">
             <div className="dashboard-grid">
-                <SideNav /> {/* Include the SideNav component */}
+               
 
                 <div className="dashboard-main-content">
                     <div className="widget user-details">

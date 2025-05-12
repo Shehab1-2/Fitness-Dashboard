@@ -26,7 +26,7 @@ const navigate = useNavigate(); // Initialize the useNavigate hook
 
     try {
       // Send data to the server using Fetch API
-      const response = await fetch('http://localhost:5001/api/users/fitness-survey', {
+      const response = await fetch('http://localhost:5001/fitness-survey', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

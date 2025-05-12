@@ -1,16 +1,18 @@
 const request = require('supertest');
 const mongoose = require('mongoose');
 const { MongoMemoryServer } = require('mongodb-memory-server');
-const app = require('../app'); // Your main Express app file
+const app = require('../app');
 const User = require('../models/usersModel');
-
 
 let mongoServer;
 
 beforeAll(async () => {
   mongoServer = await MongoMemoryServer.create();
   const uri = mongoServer.getUri();
-  await mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+  await mongoose.connect(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
 });
 
 afterAll(async () => {
@@ -31,34 +33,34 @@ describe('User Routes (RESTful)', () => {
     weight: 75,
     fitnessGoals: 'Lose weight',
     currentActivityLevel: 'Active',
-    dietaryPreferences: 'Vegan'
+    dietaryPreferences: 'Vegan',
   };
 
   it('should create a new user', async () => {
-    const res = await request(app).post('/users').send(userData);
+    const res = await request(app).post('/signup').send(userData);
     expect(res.statusCode).toBe(201);
     expect(res.body.message).toBe('User created successfully');
   });
 
   it('should login with valid credentials', async () => {
-    await request(app).post('/users').send(userData);
+    await request(app).post('/signup').send(userData);
     const res = await request(app).post('/auth/login').send({
       username: 'testuser',
-      password: 'securepass'
+      password: 'securepass',
     });
     expect(res.statusCode).toBe(200);
     expect(res.body.message).toBe('Login successful');
   });
 
   it('should get user profile', async () => {
-    await request(app).post('/users').send(userData);
+    await request(app).post('/signup').send(userData);
     const res = await request(app).get('/users/testuser');
     expect(res.statusCode).toBe(200);
     expect(res.body.username).toBe('testuser');
   });
 
   it('should update survey data', async () => {
-    await request(app).post('/users').send(userData);
+    await request(app).post('/signup').send(userData);
     const res = await request(app)
       .put('/users/testuser/survey')
       .send({ dietaryPreferences: 'Keto' });
@@ -67,7 +69,7 @@ describe('User Routes (RESTful)', () => {
   });
 
   it('should update BMI', async () => {
-    await request(app).post('/users').send(userData);
+    await request(app).post('/signup').send(userData);
     const res = await request(app)
       .put('/users/testuser/bmi')
       .send({ bmi: 23.5 });
@@ -76,7 +78,7 @@ describe('User Routes (RESTful)', () => {
   });
 
   it('should update weight', async () => {
-    await request(app).post('/users').send(userData);
+    await request(app).post('/signup').send(userData);
     const res = await request(app)
       .put('/users/testuser/weights')
       .send({ weight: 72, date: new Date().toISOString() });
@@ -85,7 +87,7 @@ describe('User Routes (RESTful)', () => {
   });
 
   it('should get weights', async () => {
-    await request(app).post('/users').send(userData);
+    await request(app).post('/signup').send(userData);
     await request(app)
       .put('/users/testuser/weights')
       .send({ weight: 72, date: new Date().toISOString() });
@@ -95,7 +97,7 @@ describe('User Routes (RESTful)', () => {
   });
 
   it('should update workout plan', async () => {
-    await request(app).post('/users').send(userData);
+    await request(app).post('/signup').send(userData);
     const res = await request(app)
       .put('/users/testuser/workout-plan')
       .send({ workoutPlan: { monday: 'Chest day' } });
@@ -104,7 +106,7 @@ describe('User Routes (RESTful)', () => {
   });
 
   it('should get workout plan', async () => {
-    await request(app).post('/users').send(userData);
+    await request(app).post('/signup').send(userData);
     await request(app)
       .put('/users/testuser/workout-plan')
       .send({ workoutPlan: { tuesday: 'Back day' } });

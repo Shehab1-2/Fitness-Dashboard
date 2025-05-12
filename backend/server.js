@@ -55,7 +55,7 @@ app.use(session({
 }));
 
 // API Routes
-app.use('/users', userRoutes);
+app.use('/', userRoutes);
 
 app.get('/health', (req, res) => {
   res.send('OK');

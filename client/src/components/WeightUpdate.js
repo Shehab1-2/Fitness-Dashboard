@@ -1,98 +1,123 @@
 import React, { useState, useEffect } from 'react';
-import './WeightUpdate.css'; // Import the CSS file
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
+import './WeightInputWidget.css'; // Use the existing CSS
 
 const WeightUpdate = ({ username }) => {
-    const [weights, setWeights] = useState([]);
-    const [editIndex, setEditIndex] = useState(-1);
-    const [editForm, setEditForm] = useState({ weight: '', date: '' });
+    const [weight, setWeight] = useState('');
+    const [selectedDate, setSelectedDate] = useState(new Date());
+    const [weightHistory, setWeightHistory] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchWeights = async () => {
-            try {
-                const response = await fetch(`http://localhost:5001/api/users/get-weights?username=${username}`);
-                if (!response.ok) {
-                    throw new Error('Failed to fetch weights');
-                }
+        fetchWeightHistory();
+    }, []);
+
+    const fetchWeightHistory = async () => {
+        setLoading(true);
+        try {
+            const response = await fetch(`http://localhost:5001/users/${username}/weights`);
+            if (response.ok) {
                 const data = await response.json();
-                if (data && data.weights) {
-                    setWeights(data.weights);
-                } else {
-                    console.log('No weight data found:', data);
+                if (data.weights) {
+                    // Sort weights by date (newest first)
+                    const sortedWeights = data.weights.sort((a, b) => 
+                        new Date(b.date) - new Date(a.date)
+                    );
+                    // Show only the last 5 entries
+                    setWeightHistory(sortedWeights.slice(0, 5));
                 }
-            } catch (error) {
-                console.error('Error fetching weights:', error);
+            } else {
+                console.error('Failed to fetch weight history');
             }
-        };
-
-        fetchWeights();
-    }, [username]);
-
-    const handleEdit = (index) => {
-        setEditIndex(index);
-        setEditForm({
-            weight: weights[index].weight,
-            date: new Date(weights[index].date).toISOString().slice(0, 10) // Ensure date format is correct for input[type=date]
-        });
+        } catch (error) {
+            console.error('Error fetching weight history:', error);
+        }
+        setLoading(false);
     };
 
-    const handleSave = async (index) => {
-        const updatedWeight = { ...weights[index], weight: editForm.weight, date: editForm.date };
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        
+        if (!username) {
+            alert('Username not found. Please log in.');
+            return;
+        }
+
         try {
-            const response = await fetch(`http://localhost:5001/api/users/update-weight`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    username,
-                    weight: updatedWeight.weight,
-                    date: updatedWeight.date
-                })
+            const response = await fetch(`http://localhost:5001/users/${username}/weights`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, weight, date: selectedDate })
             });
-            if (!response.ok) {
+            if (response.ok) {
+                alert('Weight updated successfully!');
+                setWeight(''); // Clear the input
+                fetchWeightHistory(); // Refresh the weight history
+            } else {
                 throw new Error('Failed to update weight');
             }
-            const updatedWeights = [...weights];
-            updatedWeights[index] = updatedWeight;
-            setWeights(updatedWeights);
-            setEditIndex(-1);
         } catch (error) {
             console.error('Error updating weight:', error);
+            alert('Failed to update weight.');
         }
     };
 
-    const handleChange = (e) => {
-        setEditForm({ ...editForm, [e.target.name]: e.target.value });
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'short', 
+            day: 'numeric' 
+        });
     };
 
     return (
-        <div className="input-widget">
-            <ul>
-                {weights.map((weight, index) => (
-                    <li key={index}>
-                        {editIndex === index ? (
-                            <div>
-                                <input
-                                    type="number"
-                                    name="weight"
-                                    value={editForm.weight}
-                                    onChange={handleChange}
-                                />
-                                <input
-                                    type="date"
-                                    name="date"
-                                    value={editForm.date}
-                                    onChange={handleChange}
-                                />
-                                <button onClick={() => handleSave(index)}>Save</button>
-                            </div>
-                        ) : (
-                            <div>
-                                {new Date(weight.date).toLocaleDateString()}: {weight.weight} kg
-                                <button onClick={() => handleEdit(index)}>Edit</button>
-                            </div>
-                        )}
-                    </li>
-                ))}
-            </ul>
+        <div className="weight-update-container">
+            <h3>Update Your Weight</h3>
+            <form onSubmit={handleSubmit} className="weight-update-form">
+                <div className="input-group">
+                    <label>Weight (lb):</label>
+                    <input
+                        type="number"
+                        value={weight}
+                        onChange={(e) => setWeight(e.target.value)}
+                        placeholder="Enter your weight"
+                        required
+                    />
+                </div>
+                <div className="input-group">
+                    <label>Date:</label>
+                    <DatePicker
+                        selected={selectedDate}
+                        onChange={date => setSelectedDate(date)}
+                        dateFormat="MMMM d, yyyy"
+                        className="date-picker"
+                        maxDate={new Date()}
+                    />
+                </div>
+                <button type="submit" className="submit-btn">Update Weight</button>
+            </form>
+
+            <div className="weight-history">
+                <h4>Recent Weight History</h4>
+                {loading ? (
+                    <p>Loading history...</p>
+                ) : weightHistory.length > 0 ? (
+                    <ul className="weight-list">
+                        {weightHistory.map((entry, index) => (
+                            <li key={index} className="weight-item">
+                                <span className="weight-date">{formatDate(entry.date)}</span>
+                                <span className="weight-value">{entry.weight} lb</span>
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <p className="no-data">No weight records found</p>
+                )}
+            </div>
         </div>
     );
 };

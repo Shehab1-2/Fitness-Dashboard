@@ -58,7 +58,7 @@ const CheckBMI = () => {
 
 const saveBMI = async (bmiValue) => {
   const username = localStorage.getItem('username');
-  const response = await fetch('http://localhost:5001//save-bmi', {
+  const response = await fetch('http://localhost:5001/save-bmi', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, bmi: bmiValue }),

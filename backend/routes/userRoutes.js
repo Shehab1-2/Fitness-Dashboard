@@ -10,7 +10,7 @@ const adminCredentials = {
 };
 
 // Create new user (signup)
-router.post('/users', async (req, res) => {
+router.post('/signup', async (req, res) => {
   try {
     const existingUser = await User.findOne({ username: req.body.username });
     if (existingUser) {

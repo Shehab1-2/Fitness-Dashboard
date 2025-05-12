@@ -2,7 +2,7 @@
  * @swagger
  * tags:
  *   name: Users
- *   description: API endpoints for user management
+ *   description: User-related operations
  */
 
 /**
@@ -43,14 +43,14 @@
  *       409:
  *         description: User already exists
  *       500:
- *         description: Error creating the user
+ *         description: Error creating user
  */
 
 /**
  * @swagger
- * /login:
+ * /auth/login:
  *   post:
- *     summary: Login user or admin
+ *     summary: Login as user or admin
  *     tags: [Users]
  *     requestBody:
  *       required: true
@@ -79,24 +79,84 @@
 
 /**
  * @swagger
- * /save-bmi:
- *   post:
- *     summary: Save user's BMI
+ * /users/{username}:
+ *   get:
+ *     summary: Get a user's profile
  *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: username
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: User profile returned
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Error retrieving user
+ */
+
+/**
+ * @swagger
+ * /users/{username}/survey:
+ *   put:
+ *     summary: Update a user's survey data
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: username
+ *         required: true
+ *         schema:
+ *           type: string
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
+ *             example:
+ *               gender: Male
+ *               height: 180
+ *               weight: 75
+ *               dietaryPreferences: Vegetarian
+ *               currentActivityLevel: Active
+ *               fitnessGoals: Lose fat
+ *     responses:
+ *       200:
+ *         description: Survey data updated
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Error updating survey
+ */
+
+/**
+ * @swagger
+ * /users/{username}/bmi:
+ *   put:
+ *     summary: Update a user's BMI
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: username
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [bmi]
  *             properties:
- *               username:
- *                 type: string
  *               bmi:
  *                 type: number
  *     responses:
  *       200:
- *         description: BMI updated successfully
+ *         description: BMI updated
  *       404:
  *         description: User not found
  *       500:
@@ -105,45 +165,9 @@
 
 /**
  * @swagger
- * /fitness-survey:
- *   post:
- *     summary: Submit fitness survey data
- *     tags: [Users]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               username:
- *                 type: string
- *               gender:
- *                 type: string
- *               height:
- *                 type: number
- *               weight:
- *                 type: number
- *               fitnessGoals:
- *                 type: string
- *               currentActivityLevel:
- *                 type: string
- *               dietaryPreferences:
- *                 type: string
- *     responses:
- *       200:
- *         description: Survey data updated successfully
- *       404:
- *         description: User not found
- *       500:
- *         description: Error updating survey data
- */
-
-/**
- * @swagger
- * /user/{username}:
- *   get:
- *     summary: Get user details by username
+ * /users/{username}/weights:
+ *   put:
+ *     summary: Update or add a weight entry
  *     tags: [Users]
  *     parameters:
  *       - in: path
@@ -151,30 +175,14 @@
  *         required: true
  *         schema:
  *           type: string
- *     responses:
- *       200:
- *         description: User data retrieved
- *       404:
- *         description: User not found
- *       500:
- *         description: Error retrieving user data
- */
-
-/**
- * @swagger
- * /update-weight:
- *   post:
- *     summary: Update or add a weight entry
- *     tags: [Users]
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
+ *             required: [weight, date]
  *             properties:
- *               username:
- *                 type: string
  *               weight:
  *                 type: number
  *               date:
@@ -182,7 +190,7 @@
  *                 format: date
  *     responses:
  *       200:
- *         description: Weight updated successfully
+ *         description: Weight updated
  *       404:
  *         description: User not found
  *       500:
@@ -191,56 +199,9 @@
 
 /**
  * @swagger
- * /get-weights:
+ * /users/{username}/weights:
  *   get:
- *     summary: Get weights for a user
- *     tags: [Users]
- *     parameters:
- *       - in: query
- *         name: username
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Weights retrieved successfully
- *       404:
- *         description: User not found
- *       500:
- *         description: Error retrieving weights
- */
-
-/**
- * @swagger
- * /save-workout-plan:
- *   post:
- *     summary: Save user's workout plan
- *     tags: [Users]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               username:
- *                 type: string
- *               workoutPlan:
- *                 type: object
- *     responses:
- *       200:
- *         description: Workout plan updated successfully
- *       404:
- *         description: User not found
- *       500:
- *         description: Error updating workout plan
- */
-
-/**
- * @swagger
- * /get-workout-plan/{username}:
- *   get:
- *     summary: Get user's workout plan
+ *     summary: Get a user's weight history
  *     tags: [Users]
  *     parameters:
  *       - in: path
@@ -250,7 +211,61 @@
  *           type: string
  *     responses:
  *       200:
- *         description: Workout plan retrieved successfully
+ *         description: Weight data retrieved
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Error retrieving weights
+ */
+
+/**
+ * @swagger
+ * /users/{username}/workout-plan:
+ *   put:
+ *     summary: Update a user's workout plan
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: username
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               workoutPlan:
+ *                 type: object
+ *                 example:
+ *                   monday: Chest
+ *                   tuesday: Back
+ *     responses:
+ *       200:
+ *         description: Workout plan updated
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Error updating workout plan
+ */
+
+/**
+ * @swagger
+ * /users/{username}/workout-plan:
+ *   get:
+ *     summary: Get a user's workout plan
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: username
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Workout plan retrieved
  *       404:
  *         description: User not found
  *       500:

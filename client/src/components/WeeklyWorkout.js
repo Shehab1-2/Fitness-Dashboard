@@ -20,7 +20,7 @@ const WeeklyWorkout = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch(`http://localhost:5001/api/users/user/${username}`);
+        const response = await fetch(`http://localhost:5001/users/${username}`);
         if (!response.ok) {
           throw new Error('Failed to fetch user details');
         }
@@ -70,7 +70,7 @@ const WeeklyWorkout = () => {
       5 exercises specifying the type of exercise, sets, reps strictly with no additional information. `;
 
     try {
-      const response = await fetch('http://localhost:5001/api/chatgpt', {
+      const response = await fetch('http://localhost:5001/chatgpt', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ question: prompt }),
@@ -81,8 +81,8 @@ const WeeklyWorkout = () => {
         setWorkoutPlan(data.response);
 
         // Save the generated workout plan to the user's profile
-        await fetch('http://localhost:5001/api/users/save-workout-plan', {
-          method: 'POST',
+        await fetch(`http://localhost:5001/users/${username}/workout-plan`, {
+          method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ username, workoutPlan: data.response }),
         });
@@ -100,7 +100,6 @@ const WeeklyWorkout = () => {
   return (
     <div className="weekly-workout-dashboard">
       <div className="dashboard-grid">
-        <SideNav />
         <div className="weekly-workout-content">
           <h2>Generate Your Weekly Workout Plan</h2>
           <div className="form-group">

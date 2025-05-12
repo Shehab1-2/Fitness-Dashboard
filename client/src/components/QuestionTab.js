@@ -31,8 +31,8 @@ const QuestionTab = () => {
         `;
 
         try {
-            const result = await fetch('http://localhost:5001/api/chatgpt', {
-                method: 'POST',
+            const result = await fetch('http://localhost:5001/chatgpt', {
+                method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ question: `${prompt}\n${question}` }),
             });
@@ -57,9 +57,7 @@ const QuestionTab = () => {
 
     return (
         <div className="question-tab-dashboard">
-            <div className="dashboard-grid">
-                <SideNav />
-                
+            <div className="dashboard-grid">                
                 <div className="question-tab-content">
                     <h2>Ask a Question</h2>
                     <textarea

@@ -1,11 +1,12 @@
 const axios = require('axios');
-const BASE_URL = 'http://localhost:5001/api/users';
 
-const USE_UNIQUE_USER = true; // Set to true if you want to test with a fresh user every time
+const BASE_API = 'http://localhost:5001';
+const BASE_URL = `${BASE_API}`;
+const DISCORD_WEBHOOK = 'https://discord.com/api/webhooks/1370205047253766306/GAHjEyqMj3CIvsFXjoUzA5jXmJTe4j7EiJntfUP-mLjEE2C_S1aCKH8bv18t4YSeDGkh';
 
 const baseUsername = 'testuser';
 const user = {
-  username: USE_UNIQUE_USER ? `${baseUsername}_${Date.now()}` : baseUsername,
+  username: `${baseUsername}_${Date.now()}`,
   password: 'testpass123',
   gender: 'Male',
   height: 180,
@@ -15,86 +16,85 @@ const user = {
   dietaryPreferences: 'High protein',
 };
 
-const runTests = async () => {
+const sendToDiscord = async (content) => {
   try {
-    console.log('\n[1] Signup');
-    try {
-      await axios.post(`${BASE_URL}/signup`, user);
-      console.log('✅ Signup successful');
-    } catch (err) {
-      if (err.response?.status === 409) {
-        console.log('ℹ️ User already exists, continuing to login');
-      } else {
-        throw err;
-      }
-    }
-
-    console.log('\n[2] Login');
-    await axios.post(`${BASE_URL}/login`, {
-      username: user.username,
-      password: user.password,
+    await axios.post(DISCORD_WEBHOOK, {
+      username: 'Fitness Bot',
+      content,
     });
-    console.log('✅ Login successful');
+  } catch (err) {
+    console.error('❌ Discord webhook error:', err.message);
+  }
+};
 
-    console.log('\n[3] Save BMI');
-    await axios.post(`${BASE_URL}/save-bmi`, {
-      username: user.username,
-      bmi: 23.5,
-    });
-    console.log('✅ BMI saved');
+const runTests = async () => {
+  let success = true;
+  let results = `🧪 **Test Summary**\n\n👤 Username: \`${user.username}\`\n🔑 Password: \`${user.password}\`\n`;
 
-    console.log('\n[4] Fitness Survey');
-    await axios.post(`${BASE_URL}/fitness-survey`, {
+  try {
+    const addResult = (label, status, data = '') => {
+      results += `${status ? '✅' : '❌'} ${label}${data ? `: \`${JSON.stringify(data).slice(0, 100)}\`` : ''}\n`;
+    };
+
+    const post = async (url, body) => (await axios.post(url, body)).data;
+    const put = async (url, body) => (await axios.put(url, body)).data;
+    const get = async (url) => (await axios.get(url)).data;
+
+    await post(`${BASE_URL}/users`, user); // Signup
+    addResult('Signup', true);
+
+    await post(`${BASE_URL}/auth/login`, { username: user.username, password: user.password }); // Login
+    addResult('Login', true);
+
+    await put(`${BASE_URL}/users/${user.username}/bmi`, { bmi: 23.5 });
+    addResult('Save BMI', true);
+
+    await put(`${BASE_URL}/users/${user.username}/survey`, {
       ...user,
       height: 181,
       weight: 77,
       fitnessGoals: 'Lose fat',
     });
-    console.log('✅ Fitness survey updated');
+    addResult('Fitness Survey', true);
 
-    console.log('\n[5] Update Weight');
-    await axios.post(`${BASE_URL}/update-weight`, {
-      username: user.username,
+    await put(`${BASE_URL}/users/${user.username}/weights`, {
       weight: 76,
       date: new Date().toISOString(),
     });
-    console.log('✅ Weight updated');
+    addResult('Update Weight', true);
 
-    console.log('\n[6] Get Weights');
-    const weights = await axios.get(`${BASE_URL}/get-weights`, {
-      params: { username: user.username },
-    });
-    console.log('✅ Weights fetched:', weights.data);
+    const weights = await get(`${BASE_URL}/users/${user.username}/weights`);
+    addResult('Get Weights', true, weights);
 
-    console.log('\n[7] Save Workout Plan');
-    await axios.post(`${BASE_URL}/save-workout-plan`, {
-      username: user.username,
+    await put(`${BASE_URL}/users/${user.username}/workout-plan`, {
       workoutPlan: {
         Monday: 'Chest + Triceps',
         Tuesday: 'Back + Biceps',
         Wednesday: 'Legs',
       },
     });
-    console.log('✅ Workout plan saved');
+    addResult('Save Workout Plan', true);
 
-    console.log('\n[8] Get Workout Plan');
-    const workout = await axios.get(`${BASE_URL}/get-workout-plan/${user.username}`);
-    console.log('✅ Workout plan fetched:', workout.data);
+    const workout = await get(`${BASE_URL}/users/${user.username}/workout-plan`);
+    addResult('Get Workout Plan', true, workout);
 
-    console.log('\n[9] Get User Profile');
-    const profile = await axios.get(`${BASE_URL}/user/${user.username}`);
-    console.log('✅ Profile fetched:', profile.data);
+    const profile = await get(`${BASE_URL}/users/${user.username}`);
+    addResult('Get User Profile', true, profile);
 
-    console.log('\n[10] ChatGPT Prompt');
-    const gpt = await axios.post('http://localhost:5001/api/chatgpt', {
+    const gpt = await post(`${BASE_URL}/chatgpt`, {
       question: 'Give me a macro-friendly meal plan for cutting.',
     });
-    console.log('✅ GPT response:', gpt.data.response);
+    addResult('ChatGPT Prompt', true, { response: gpt.response.slice(0, 60) + '...' });
 
-    console.log('\n🎉 All tests completed successfully!');
   } catch (err) {
-    console.error(`❌ Error:`, err.response?.data || err.message);
+    success = false;
+    results += `\n❌ **Test failed**: ${err.response?.data?.message || err.message}`;
   }
+
+  await sendToDiscord(results);
 };
 
-runTests();
+runTests().catch(err => {
+  console.error('❌ Unhandled error in runTests:', err.message);
+  process.exit(1);
+});

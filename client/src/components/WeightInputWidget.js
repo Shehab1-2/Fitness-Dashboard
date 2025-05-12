@@ -15,8 +15,8 @@ const WeightInputWidget = () => {
         }
 
         try {
-            const response = await fetch(`http://localhost:5001/api/users/update-weight`, {
-                method: 'POST',
+            const response = await fetch(`http://localhost:5001/users/${username}/weights`, {
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },

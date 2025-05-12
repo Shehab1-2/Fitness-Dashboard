@@ -1,8 +1,7 @@
 import React from 'react';
-import './WeightProgress.css'; // Import the CSS file
+import './WeightProgress.css';
 import WeightGraph from './WeightGraph';
-import SideNav from './SideNav';
-import WeightUpdate from './WeightUpdate'; // Import the WeightUpdate component
+import WeightUpdate from './WeightUpdate';
 
 const WeightProgress = () => {
     const username = localStorage.getItem('username');
@@ -10,17 +9,15 @@ const WeightProgress = () => {
     return (
         <div className="weight-progress-dashboard">
             <div className="dashboard-grid">
-                <SideNav />
-                
                 <div className="weight-progress-content">
                     <h2>Weight Progress</h2>
                     <div className="widget-container">
                         <div className="chart-widget">
-                            <div className="chart-container">
-                                <WeightGraph username={username} />
-                            </div>
+                            <WeightGraph username={username} />
                         </div>
-                        <WeightUpdate username={username} />
+                        <div className="weight-update-container">
+                            <WeightUpdate username={username} />
+                        </div>
                     </div>
                 </div>
             </div>

@@ -23,7 +23,7 @@ const Dashboard = () => {
     const fetchWorkoutPlan = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`http://localhost:5001/api/users/get-workout-plan/${username}`);
+        const response = await fetch(`http://localhost:5001/users/${username}/workout-plan`);
         if (!response.ok) {
           throw new Error('Failed to fetch workout plan');
         }
@@ -62,22 +62,25 @@ const Dashboard = () => {
 
   return (
     <div className='dashboard'>
-      <div className="dashboard-grid">
-        <SideNav />
-        
-        <div className="dashboard-content">
-          <main className="dashboard-main-content">
+      
+      
+      <div className="dashboard-container">
+        <div className="dashboard-grid">
+          {/* Primary Column - Weekly Workout */}
+          <div className="primary-column">
             <div className="widget weekly-workout">
-              <h2>Weekly Workout</h2>
+              <h3>Weekly Workout</h3>
               {loading ? (
-                <p>Loading...</p>
+                <div className="loading-container">
+                  <p>Loading...</p>
+                </div>
               ) : error ? (
-                <p>{error}</p>
+                <p className="error-message">{error}</p>
               ) : (
                 daysOfWeek.map(day => (
                   <div key={day} className="workout-day">
                     <div className="workout-day-header" onClick={() => toggleDay(day)}>
-                      <h3>{day}</h3>
+                      <h4>{day}</h4>
                       <span>{expandedDay === day ? '-' : '+'}</span>
                     </div>
                     {expandedDay === day && (
@@ -95,11 +98,28 @@ const Dashboard = () => {
                 ))
               )}
             </div>
-          </main>
-          <div className="dashboard-summary">
-            <div className="widget"><Goal /></div>
-            <div className="widget"><MacroWidget /></div>
-            <div className="widget"> Check-In <WeightInputWidget /></div>
+          </div>
+          
+          {/* Secondary Column - Grid */}
+          <div className="secondary-column">
+            {/* Top Row - Goal */}
+            <div className="secondary-top widget">
+              <Goal />
+            </div>
+            
+            {/* Bottom Row */}
+            <div className="secondary-bottom">
+              {/* Bottom Left - Macro Widget */}
+              <div className="widget bottom-left">
+                <MacroWidget />
+              </div>
+              
+              {/* Bottom Right - Weight Input Widget */}
+              <div className="widget bottom-right">
+                <h4>Check-In</h4>
+                <WeightInputWidget />
+              </div>
+            </div>
           </div>
         </div>
       </div>
